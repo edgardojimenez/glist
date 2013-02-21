@@ -231,7 +231,7 @@
 
         var $page = $("#MPProducts"),
             //url = "http://localhost:56665/api/products",
-            url = http://mobws.apphb.com/api/products",
+            url = "http://mobws.apphb.com/api/products",
             success,
             failure;
 
