@@ -195,7 +195,8 @@
     updateGrocereyList = function () {
 
         var $page = $("#MPGroceries"),
-            url = "http://localhost:56665/api/groceries", //"http://mobws.apphb.com/api/groceries",
+            //url = "http://localhost:56665/api/groceries",
+            url = "http://mobws.apphb.com/api/groceries",
             success,
             failure;
 
@@ -229,7 +230,8 @@
     updateProductList = function () {
 
         var $page = $("#MPProducts"),
-            url = "http://localhost:56665/api/products", //"http://mobws.apphb.com/api/products",
+            //url = "http://localhost:56665/api/products",
+            url = http://mobws.apphb.com/api/products",
             success,
             failure;
 
