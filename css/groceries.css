@@ -1,6 +1,7 @@
 ﻿
+body { background-image: url(../images/cart.png);background-repeat:no-repeat;background-position: center center;}
 .h { display:none;}
-.info { font-size: medium; font-style:italic; font-size:8pt; color:#1C5180;}
+.info { font-style:italic; font-size:8pt; color:#1C5180;}
 .h12 {height:12px;}
 .h2 {height: 2px;}
 .pl5 { padding-left:5px;}
