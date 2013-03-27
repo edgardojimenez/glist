@@ -1,0 +1,35 @@
+﻿CACHE MANIFEST
+# 2013-03-01:v1  
+
+# Explicitly cached 'master entries'.
+CACHE:
+index.html
+css/groceries.css
+
+images/check-small.png
+images/uncheck-small.png
+images/cart.png
+
+scripts/modules/app.js
+scripts/modules/common.js
+scripts/modules/grocery.js
+scripts/modules/product.js
+scripts/modules/jquery.mobile.defaults.js
+scripts/modules/settings.js
+scripts/modules/jquery.js
+scripts/modules/knockout.js
+scripts/labs.min.js
+
+# Resources that require the user to be online.
+NETWORK:
+#login.php
+#/myapi
+#http://api.twitter.com
+
+# static.html will be served if main.py is inaccessible
+# offline.jpg will be served in place of all images in images/large/
+# offline.html will be served in place of all other .html files
+FALLBACK:
+#/main.py /static.html
+#images/large/ images/offline.jpg
+#*.html /offline.html

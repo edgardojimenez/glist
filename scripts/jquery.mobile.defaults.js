@@ -1,7 +1,5 @@
-﻿
-$(document).on("mobileinit", function () {
-    $('#MPGroceries').on('pageinit', function () {
-        window.grocery.initApp();
-        $('#body').removeClass('h');
+﻿$(document).on("mobileinit", function () {
+    GL.pages.groceries.on('pageinit', function () {
+        GL.app.init();
     });
 });
