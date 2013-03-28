@@ -26,7 +26,7 @@ GL.groceries = (function (GL, $, ko) {
         });
 
         GL.pages.groceries.find('#clear').click(function () {
-            g.clearGroceries();
+            clearGroceries();
         });
 
         ko.applyBindings(groceryVm, GL.pages.groceries.get(0));
@@ -106,7 +106,7 @@ GL.groceries = (function (GL, $, ko) {
 
         });
 
-        GL.pages.showError.click();
+        GL.pages.showDelete.click();
     }
 
     return {

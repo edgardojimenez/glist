@@ -6,11 +6,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-config = (function (window, $) {
+(function (window, $) {
     "use strict";
 
     var selected, environment, pages,
         prodHost = 'glist.apphb.com';
+
+    pages = {
+        groceries: $('#MPGroceries'),
+        products: $('#MPProducts'),
+        addProduct: $('#MPAddProduct'),
+        dialog: $('#MPDialog'),
+        error: $('#MPError'),
+        showError: $('#show-error-page'),
+        showDelete: $('#show-delete-page')
+    };
 
     environment = {
         production: {
@@ -24,34 +34,21 @@ config = (function (window, $) {
         }
     };
 
-    pages = {
-        groceries: $('#MPGroceries'),
-        products: $('#MPProducts'),
-        addProduct: $('#MPAddProduct'),
-        dialog: $('#MPDialog'),
-        error: $('#MPError'),
-        showError: $('#show-error-page'),
-        showDelete: $('#show-delete-page')
-    };
-
     function setEnvInternal(env) {
         return selected = environment[env];
     }
 
-    (function() {
-        if (window.location.hostname === prodHost) {
-            selected = environment.production;
-        }
+    if (window.location.hostname === prodHost) {
+        selected = environment.production;
+    } else {
         selected = environment.development;
+    }
 
-        window.GL = {};
-    })();
-
-    return {
+    $.extend((window.GL = {}), {
         pages: pages,
         setEnvironment: setEnvInternal,
         environment: selected
-    };
+    }, $.eventEmitter);
 
 })(window, jQuery);
 

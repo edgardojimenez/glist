@@ -1,9 +1,6 @@
 ﻿
-GL.app = (function(GL, $, ko, config) {
+GL.app = (function(GL, $, ko) {
     "use strict";
-
-    $.extend(GL, $.eventEmitter);
-    $.extend(GL, config);
 
     var initialize = {
 
@@ -41,7 +38,7 @@ GL.app = (function(GL, $, ko, config) {
         init: initApp
     };
 
-})(GL, jQuery, ko, config);
+})(GL, jQuery, ko);
 
 
 
