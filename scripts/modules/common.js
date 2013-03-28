@@ -46,8 +46,6 @@ GL.common = (function (GL, $, ko) {
                 data: options.data
             }).fail(function() {
                 errorDialog();
-            }).always(function() {
-                $.mobile.hidePageLoadingMsg();
             });
         }
     };

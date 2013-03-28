@@ -19,6 +19,11 @@ GL.groceries = (function (GL, $, ko) {
     
     function init(options) {
         GL.pages.groceries.bind("pageshow", function () {
+            $('#body').removeClass('h');
+
+            if (groceryVm.groceryArray().length === 0)
+                getGroceries();
+
             if (groceryVm.isDirty) {
                 GL.pages.groceries.find("#listGrocery").listview("refresh");
                 groceryVm.isDirty = false;
@@ -33,7 +38,6 @@ GL.groceries = (function (GL, $, ko) {
 
         GL.on('addproducttogrocerylist', onAddProductToGroceryList);
         GL.on('deletegrocery', deleteGrocery);
-
     }
 
     function onAddProductToGroceryList(newProduct) {
@@ -62,6 +66,8 @@ GL.groceries = (function (GL, $, ko) {
             if ($.mobile.activePage && $.mobile.activePage.attr('id') === GL.pages.groceries.attr('id'))
                 $list.listview("refresh");
 
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
         });
     }
 
@@ -77,6 +83,8 @@ GL.groceries = (function (GL, $, ko) {
             GL.emit('moveproductbacktolist', grocery[0]);
 
             GL.pages.groceries.find("#listGrocery").listview("refresh");
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
         });
     }
 
@@ -102,6 +110,8 @@ GL.groceries = (function (GL, $, ko) {
                 gl.emit('returnproductsbacktolist', productsToReturn);
 
                 GL.pages.dialog('close');
+            }).always(function() {
+                $.mobile.hidePageLoadingMsg();
             });
 
         });
@@ -110,8 +120,7 @@ GL.groceries = (function (GL, $, ko) {
     }
 
     return {
-        init: init,
-        initData: initData
+        init: init
     };
 
 })(GL, jQuery, ko);

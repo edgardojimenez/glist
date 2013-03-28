@@ -1,5 +1,5 @@
 ﻿
-GL.app = (function(GL, $, ko) {
+GL.app = (function(GL, $) {
     "use strict";
 
     var initialize = {
@@ -14,18 +14,9 @@ GL.app = (function(GL, $, ko) {
             GL.products.init(options);
         },
 
-        initData: function () {
-            var options = $.extend({}, arguments[0]);
-
-            GL.groceries.initData().always(function () {
-                $('#body').removeClass('h');
-            });
-        },
-
         initAllPages: function () {
             initialize.initGroceriesPage(arguments[0]);
             initialize.initProductsPage(arguments[0]);
-            initialize.initData(arguments[0]);
         }
     };
 
@@ -38,7 +29,7 @@ GL.app = (function(GL, $, ko) {
         init: initApp
     };
 
-})(GL, jQuery, ko);
+})(GL, jQuery);
 
 
 
