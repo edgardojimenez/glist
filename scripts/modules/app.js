@@ -21,7 +21,6 @@ GL.app = (function(GL, $) {
     };
 
     function initApp () {
-        $.mobile.showPageLoadingMsg();
         return initialize.initAllPages.apply(this, arguments);
     }
 
