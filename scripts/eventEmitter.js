@@ -6,13 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-(function(jQuery) {
+(function(gl, jQuery) {
 
-    jQuery.eventEmitter = {
+    gl.emitter = {
         _JQInit: function() {
             this._JQ = jQuery(this);
         },
-        emit: function(evt, data) {
+        fire: function(evt, data) {
             !this._JQ && this._JQInit();
             this._JQ.trigger(evt, data);
         },
@@ -30,4 +30,4 @@
         }
     };
 
-}(jQuery));
+}(GL, jQuery));

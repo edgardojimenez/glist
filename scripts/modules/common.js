@@ -1,5 +1,5 @@
 ﻿
-GL.common = (function (GL, $, ko) {
+(function (gl, $, ko) {
     "use strict";
 
     var productFactory = (function () {
@@ -8,13 +8,13 @@ GL.common = (function (GL, $, ko) {
             self.id = ko.observable(id);
             self.name = ko.observable(name);
             self.removeGrocery = function () {
-                GL.emit('deletegrocery', self.id())
+                gl.emitter.fire('deletegrocery', self.id())
             };
             self.removeProduct = function () {
-                GL.emit('deleteproduct', self.id())
+                gl.emitter.fire('deleteproduct', self.id())
             };
             self.addToGrocery = function () {
-                GL.emit('addproducttogrocerylist', self.id())
+                gl.emitter.fire('addproducttogrocerylist', self.id())
             };
             self.toggleCheck = function () {
                 $(arguments[1].currentTarget).find('img.on').toggle();
@@ -28,10 +28,10 @@ GL.common = (function (GL, $, ko) {
     })();
     
     function errorDialog() {
-        GL.pages.showError.click();
+        gl.cache.showError.click();
     }
 
-    return {
+    gl.common =  {
         productFactory: productFactory,
 
         displayErrorDialog: errorDialog,

@@ -1,5 +1,5 @@
 ﻿
-GL.groceries = (function (GL, $, ko) {
+(function (gl, $, ko) {
     "use strict";
 
     var groceryVm = {
@@ -18,84 +18,91 @@ GL.groceries = (function (GL, $, ko) {
         };
     
     function init(options) {
-        GL.pages.groceries.bind("pageshow", function () {
+        gl.cache.groceries.bind("pageshow", function () {
             $('#body').removeClass('h');
 
-            if (groceryVm.groceryArray().length === 0)
-                getGroceries();
+            getGroceries();
 
             if (groceryVm.isDirty) {
-                GL.pages.groceries.find("#listGrocery").listview("refresh");
+                gl.cache.groceries.find("#listGrocery").listview("refresh");
                 groceryVm.isDirty = false;
             }
         });
 
-        GL.pages.groceries.find('#clear').click(function () {
+        gl.cache.groceries.find('#clear').click(function () {
             clearGroceries();
         });
 
-        ko.applyBindings(groceryVm, GL.pages.groceries.get(0));
+        ko.applyBindings(groceryVm, gl.cache.groceries.get(0));
 
-        GL.on('addproducttogrocerylist', onAddProductToGroceryList);
-        GL.on('deletegrocery', deleteGrocery);
+        gl.emitter.on('addproducttogrocerylist', onAddProductToGroceryList);
+        gl.emitter.on('deletegrocery', deleteGrocery);
     }
 
     function onAddProductToGroceryList(newProduct) {
         groceryVm.groceryArray.push(newProduct);
         groceryVm.isDirty = true;
     }
-
-    function initData() {
-        return getGroceries();
-    }
     
     function getGroceries() {
-        return GL.common.getData({
-            url: GL.environment.serverUrl + '/api/groceries',
+        if (groceryVm.groceryArray().length > 0) return;
+
+        var data = JSON.parse(gl.storage.get('gl.groceryarray'));
+
+        if (data) {
+            loadGroceries(data);
+            return;
+        }
+
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/api/groceries',
             action: 'GET'
         }).done(function (data) {
-            var i,
-                $list = GL.pages.groceries.find("#listGrocery");
-
             if (data.length === 0)
                 return;
 
-            for (i = 0; i < data.length; i++)
-                groceryVm.groceryArray.push(GL.common.productFactory(data[i].ProductId, data[i].ProductName));
+            loadGroceries(data);
 
-            if ($.mobile.activePage && $.mobile.activePage.attr('id') === GL.pages.groceries.attr('id'))
-                $list.listview("refresh");
+            gl.storage.set('gl.groceryarray', JSON.stringify(data));
 
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
     }
 
+    function loadGroceries(data) {
+        for (var i = 0; i < data.length; i++)
+            groceryVm.groceryArray.push(gl.common.productFactory(data[i].ProductId, data[i].ProductName));
+
+        if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.groceries.attr('id'))
+            gl.cache.groceries.find("#listGrocery").listview("refresh");
+    }
+
     function deleteGrocery(productId) {
-        return GL.common.getData({
-            url: GL.environment.serverUrl + "/api/groceries/{0}".format(productId),
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + "/api/groceries/{0}".format(productId),
             action: 'DELETE'
         }).done(function () {
             var grocery = groceryVm.groceryArray.remove(function (item) {
                 return item.id() === parseInt(productId, 10);
             });
 
-            GL.emit('moveproductbacktolist', grocery[0]);
+            gl.emitter.fire('moveproductbacktolist', grocery[0]);
 
-            GL.pages.groceries.find("#listGrocery").listview("refresh");
+            gl.cache.groceries.find("#listGrocery").listview("refresh");
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
     }
 
     function clearGroceries() {
-        var $ok = GL.pages.dialog.find('a#ok');
+        var $ok = gl.cache.dialog.find('a#ok');
 
         $ok.off('click');
 
         $ok.on("click", function () {
-            return GL.common.getData({
-                url: GL.environment.serverUrl + "/api/groceries",
+            return gl.common.getData({
+                url: gl.config.environment.serverUrl + "/api/groceries",
                 action: 'DELETE'
             }).done(function() {
                 var productsToReturn = [];
@@ -105,21 +112,21 @@ GL.groceries = (function (GL, $, ko) {
                 });
 
                 groceryVm.groceryArray.removeAll();
-                GL.pages.groceries.find("#listGrocery").listview("refresh");
+                gl.cache.groceries.find("#listGrocery").listview("refresh");
 
-                gl.emit('returnproductsbacktolist', productsToReturn);
+                gl.emitter.fire('returnproductsbacktolist', productsToReturn);
 
-                GL.pages.dialog('close');
+                gl.cache.dialog('close');
             }).always(function() {
                 $.mobile.hidePageLoadingMsg();
             });
 
         });
 
-        GL.pages.showDelete.click();
+        gl.cache.showDelete.click();
     }
 
-    return {
+    gl.groceries = {
         init: init
     };
 

@@ -1,5 +1,5 @@
 ﻿
-GL.products = (function (GL, $, ko) {
+(function (gl, $, ko) {
     "use strict";
 
     var productVm = {
@@ -36,29 +36,28 @@ GL.products = (function (GL, $, ko) {
     };
 
     function init(options) {
-        GL.pages.products.bind("pageshow", function () {
+        gl.cache.products.bind("pageshow", function () {
             $('#body').removeClass('h');
 
-            if (productVm.productArray().length === 0)
-                getProducts();
+            getProducts();
 
             if (productVm.isDirty) {
-                GL.pages.products.find("#listProduct").listview("refresh");
+                gl.cache.products.find("#listProduct").listview("refresh");
                 productVm.isDirty = false;
             }
         });
 
-        GL.pages.addProduct.bind("pageshow", function () {
+        gl.cache.addProduct.bind("pageshow", function () {
             addProductVm.reset();
         });
 
-        ko.applyBindings(productVm, GL.pages.products.get(0));
-        ko.applyBindings(addProductVm, GL.pages.addProduct.get(0));
+        ko.applyBindings(productVm, gl.cache.products.get(0));
+        ko.applyBindings(addProductVm, gl.cache.addProduct.get(0));
 
-        GL.on('moveproductbacktolist', onMoveProductBackToList);
-        GL.on('returnproductsbacktolist', onReturnProductsbackToList);
-        GL.on('deleteproduct', deleteProduct);
-        GL.on('addproducttogrocerylist', addProductToGroceryList);
+        gl.emitter.on('moveproductbacktolist', onMoveProductBackToList);
+        gl.emitter.on('returnproductsbacktolist', onReturnProductsbackToList);
+        gl.emitter.on('deleteproduct', deleteProduct);
+        gl.emitter.on('addproducttogrocerylist', addProductToGroceryList);
     }
 
     function onMoveProductBackToList(product) {
@@ -77,29 +76,42 @@ GL.products = (function (GL, $, ko) {
     }
 
     function getProducts () {
-        return GL.common.getData({
-            url: GL.environment.serverUrl + '/api/products',
+        if (productVm.productArray().length > 0) return;
+
+        var data = JSON.parse(gl.storage.get('gl.productarray'));
+
+        if (data) {
+            loadProducts(data);
+            return;
+        }
+
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/api/products',
             action: 'GET'
         }).done(function (data) {
-            var i,
-                $list = GL.pages.products.find("#listProduct");
-
             if (data.length === 0)
                 return;
 
-            for (i = 0; i < data.length; i++)
-                productVm.productArray.push(GL.common.productFactory(data[i].Id, data[i].Name));
+            loadProducts(data);
 
-            if ($.mobile.activePage && $.mobile.activePage.attr('id') === GL.pages.products.attr('id'))
-                $list.listview("refresh");
+            gl.storage.set('gl.productarray', JSON.stringify(data));
+
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
     }
 
+    function loadProducts(data) {
+        for (var i = 0; i < data.length; i++)
+            productVm.productArray.push(gl.common.productFactory(data[i].Id, data[i].Name));
+
+        if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.products.attr('id'))
+            gl.cache.products.find("#listProduct").listview("refresh");
+    }
+
     function addProductToGroceryList(productId) {
-        return GL.common.getData({
-            url: GL.environment.serverUrl + '/api/groceries/{0}'.format(productId),
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
             action: 'POST'
         }).done(function() {
 
@@ -109,7 +121,7 @@ GL.products = (function (GL, $, ko) {
 
             removeProduct(product[0]);
 
-            GL.emit('addproducttogrocerylist', product[0]);
+            gl.emitter.fire('addproducttogrocerylist', product[0]);
 
             groceryVm.isDirty = true;
             $("#MPProducts").find("#listProduct").listview("refresh");
@@ -119,11 +131,11 @@ GL.products = (function (GL, $, ko) {
     }
 
     function deleteProduct(id) {
-        var $ok = GL.pages.dialog.find('a#ok');
+        var $ok = gl.cache.dialog.find('a#ok');
 
         $ok.off('click');
         $ok.on('click', function () {
-            return GL.common.getData({
+            return gl.common.getData({
                 url: options.serverUrl + "/home/removeproduct/{0}".format(id),
                 action: 'GET'
             }).done(function () {
@@ -133,7 +145,7 @@ GL.products = (function (GL, $, ko) {
 
                 removeProduct(product[0]);
 
-                GL.pages.products.find("#listProduct").listview();
+                gl.cache.products.find("#listProduct").listview();
 
                 $page.dialog('close');
             });
@@ -141,27 +153,27 @@ GL.products = (function (GL, $, ko) {
             $.mobile.hidePageLoadingMsg();
         });
 
-        GL.pages.showError.click();
+        gl.cache.showError.click();
     }
 
     function addProductToProductList(name, addToList) {
-        return GL.common.getData({
-            url: GL.environment.serverUrl + '/home/addproduct',
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/home/addproduct',
             action: 'POST',
             data: { product: name, addToList: addToList }
         }).done(function (data) {
             var newProduct;
 
             if (!data) {
-                GL.common.displayErrorDialog();
+                gl.common.displayErrorDialog();
                 return;
             }
 
             if (data.Id > 0) {
-                newProduct = GL.common.productFactory(data.Id, data.Name);
+                newProduct = gl.common.productFactory(data.Id, data.Name);
 
                 if (addToList) {
-                    GL.emit('addproducttogrocerylist', newProduct)
+                    gl.emitter.fire('addproducttogrocerylist', newProduct)
                 } else {
                     addToProducts(newProduct);
                     sortProducts();
@@ -185,7 +197,7 @@ GL.products = (function (GL, $, ko) {
         });
 
         if (!exists) {
-            productVm.productArray.push(GL.common.productFactory(-1, startingLetter));
+            productVm.productArray.push(gl.common.productFactory(-1, startingLetter));
         }
 
         productVm.productArray.push(product);
@@ -214,7 +226,7 @@ GL.products = (function (GL, $, ko) {
         });
     }
 
-    return {
+    gl.products =  {
         init: init
     }
 

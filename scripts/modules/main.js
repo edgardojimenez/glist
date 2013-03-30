@@ -1,17 +1,25 @@
-﻿
-GL.app = (function(GL, $) {
+/**
+ * Created with JetBrains WebStorm.
+ * User: ejimenez
+ * Date: 3/30/13
+ * Time: 9:31 AM
+ * To change this template use File | Settings | File Templates.
+ */
+
+
+(function(gl, $) {
     "use strict";
 
     var initialize = {
 
         initGroceriesPage: function () {
             var options = $.extend({}, arguments[0]);
-            GL.groceries.init(options);
+            gl.groceries.init(options);
         },
 
         initProductsPage: function () {
             var options = $.extend({}, arguments[0]);
-            GL.products.init(options);
+            gl.products.init(options);
         },
 
         initAllPages: function () {
@@ -24,7 +32,7 @@ GL.app = (function(GL, $) {
         return initialize.initAllPages.apply(this, arguments);
     }
 
-    return {
+    gl.main =  {
         init: initApp
     };
 
