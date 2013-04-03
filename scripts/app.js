@@ -26,6 +26,10 @@
 }());
 
 
-window.GL = {};
+(function(win, $) {
+    win.GL = win.GL || {};
+    win.GL.emitter = new win.Medium();
+
+}(window, jQuery))
 
 

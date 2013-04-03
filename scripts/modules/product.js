@@ -54,10 +54,10 @@
         ko.applyBindings(productVm, gl.cache.products.get(0));
         ko.applyBindings(addProductVm, gl.cache.addProduct.get(0));
 
-        gl.emitter.on('moveproductbacktolist', onMoveProductBackToList);
-        gl.emitter.on('returnproductsbacktolist', onReturnProductsbackToList);
-        gl.emitter.on('deleteproduct', deleteProduct);
-        gl.emitter.on('addproducttogrocerylist', addProductToGroceryList);
+        gl.emitter.subscribe('moveproductbacktolist', onMoveProductBackToList);
+        gl.emitter.subscribe('returnproductsbacktolist', onReturnProductsBackToList);
+        gl.emitter.subscribe('deleteproduct', deleteProduct);
+        gl.emitter.subscribe('addproducttogrocerylist', addProductToGroceryList);
     }
 
     function onMoveProductBackToList(product) {
@@ -66,7 +66,7 @@
         productVm.isDirty = true;
     }
 
-    function onReturnProductsbackToList(products) {
+    function onReturnProductsBackToList(products) {
         ko.utils.arrayForEach(products, function (item) {
             addToProducts(item);
         });
@@ -78,10 +78,12 @@
     function getProducts () {
         if (productVm.productArray().length > 0) return;
 
+        $.mobile.showPageLoadingMsg();
         var data = JSON.parse(gl.storage.get('gl.productarray'));
 
         if (data) {
             loadProducts(data);
+            $.mobile.hidePageLoadingMsg();
             return;
         }
 
@@ -121,7 +123,7 @@
 
             removeProduct(product[0]);
 
-            gl.emitter.fire('addproducttogrocerylist', product[0]);
+            gl.emitter.publish('addproducttogrocerylist', product[0]);
 
             groceryVm.isDirty = true;
             $("#MPProducts").find("#listProduct").listview("refresh");
@@ -173,7 +175,7 @@
                 newProduct = gl.common.productFactory(data.Id, data.Name);
 
                 if (addToList) {
-                    gl.emitter.fire('addproducttogrocerylist', newProduct)
+                    gl.emitter.publish('addproducttogrocerylist', newProduct)
                 } else {
                     addToProducts(newProduct);
                     sortProducts();

@@ -8,13 +8,13 @@
             self.id = ko.observable(id);
             self.name = ko.observable(name);
             self.removeGrocery = function () {
-                gl.emitter.fire('deletegrocery', self.id())
+                gl.emitter.publish('deletegrocery', self.id())
             };
             self.removeProduct = function () {
-                gl.emitter.fire('deleteproduct', self.id())
+                gl.emitter.publish('deleteproduct', self.id())
             };
             self.addToGrocery = function () {
-                gl.emitter.fire('addproducttogrocerylist', self.id())
+                gl.emitter.publish('addproducttogrocerylist', self.id())
             };
             self.toggleCheck = function () {
                 $(arguments[1].currentTarget).find('img.on').toggle();

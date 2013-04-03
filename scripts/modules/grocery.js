@@ -35,8 +35,8 @@
 
         ko.applyBindings(groceryVm, gl.cache.groceries.get(0));
 
-        gl.emitter.on('addproducttogrocerylist', onAddProductToGroceryList);
-        gl.emitter.on('deletegrocery', deleteGrocery);
+        gl.emitter.subscribe('addproducttogrocerylist', onAddProductToGroceryList);
+        gl.emitter.subscribe('deletegrocery', deleteGrocery);
     }
 
     function onAddProductToGroceryList(newProduct) {
@@ -87,7 +87,7 @@
                 return item.id() === parseInt(productId, 10);
             });
 
-            gl.emitter.fire('moveproductbacktolist', grocery[0]);
+            gl.emitter.publish('moveproductbacktolist', grocery[0]);
 
             gl.cache.groceries.find("#listGrocery").listview("refresh");
         }).always(function() {
@@ -114,7 +114,7 @@
                 groceryVm.groceryArray.removeAll();
                 gl.cache.groceries.find("#listGrocery").listview("refresh");
 
-                gl.emitter.fire('returnproductsbacktolist', productsToReturn);
+                gl.emitter.publish('returnproductsbacktolist', productsToReturn);
 
                 gl.cache.dialog('close');
             }).always(function() {
