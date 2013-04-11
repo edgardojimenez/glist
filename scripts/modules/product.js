@@ -113,7 +113,8 @@
 
     function addProductToGroceryList(productId) {
         return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
+            url: gl.config.environment.serverUrl + '/api/groceries',
+            data: {id: productId },
             action: 'POST'
         }).done(function() {
 
@@ -138,7 +139,7 @@
         $ok.off('click');
         $ok.on('click', function () {
             return gl.common.getData({
-                url: options.serverUrl + "/home/removeproduct/{0}".format(id),
+                url: options.serverUrl + "/home/Products/{0}".format(id),
                 action: 'GET'
             }).done(function () {
                 var product = productVm.productArray.remove(function (item) {
@@ -160,7 +161,7 @@
 
     function addProductToProductList(name, addToList) {
         return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/home/addproduct',
+            url: gl.config.environment.serverUrl + '/home/Products',
             action: 'POST',
             data: { product: name, addToList: addToList }
         }).done(function (data) {
@@ -226,6 +227,23 @@
         productVm.productArray.sort(function (item1, item2) {
             return item2.name().toLowerCase() > item1.name().toLowerCase() ? -1 : item2.name().toLowerCase() === item1.name().toLowerCase() ? 0 : 1;
         });
+    }
+
+    function persistProducts() {
+        gl.storage.set('gl.productarray', ko.toJSON(productVm.productArray))
+    }
+
+    function unPersistProducts() {
+        if (productVm.productArray().length > 0) return true;
+
+        var data = JSON.parse(gl.storage.get('gl.productarray'));
+
+        if (data && data.length > 0) {
+            loadProducts(data);
+            return true;
+        }
+
+        return false;
     }
 
     gl.products =  {

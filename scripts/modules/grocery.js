@@ -45,14 +45,7 @@
     }
     
     function getGroceries() {
-        if (groceryVm.groceryArray().length > 0) return;
-
-        var data = JSON.parse(gl.storage.get('gl.groceryarray'));
-
-        if (data) {
-            loadGroceries(data);
-            return;
-        }
+        if (gl.common.unPersist('gl.groceryarray', groceryVm.groceryArray, loadGroceries)) return;
 
         return gl.common.getData({
             url: gl.config.environment.serverUrl + '/api/groceries',
@@ -63,7 +56,7 @@
 
             loadGroceries(data);
 
-            gl.storage.set('gl.groceryarray', JSON.stringify(data));
+            gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
 
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -71,8 +64,9 @@
     }
 
     function loadGroceries(data) {
-        for (var i = 0; i < data.length; i++)
-            groceryVm.groceryArray.push(gl.common.productFactory(data[i].ProductId, data[i].ProductName));
+        for (var i = 0; i < data.length; i++) {
+            groceryVm.groceryArray.push(gl.common.productFactory(data[i].id || data[i].ProductId,  data[i].name || data[i].ProductName));
+        }
 
         if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.groceries.attr('id'))
             gl.cache.groceries.find("#listGrocery").listview("refresh");
@@ -90,6 +84,8 @@
             gl.emitter.publish('moveproductbacktolist', grocery[0]);
 
             gl.cache.groceries.find("#listGrocery").listview("refresh");
+
+            gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
@@ -116,11 +112,12 @@
 
                 gl.emitter.publish('returnproductsbacktolist', productsToReturn);
 
+                gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
+
                 gl.cache.dialog('close');
             }).always(function() {
                 $.mobile.hidePageLoadingMsg();
             });
-
         });
 
         gl.cache.showDelete.click();
