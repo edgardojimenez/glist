@@ -12,7 +12,7 @@
         groceries: $('#MPGroceries'),
         products: $('#MPProducts'),
         addProduct: $('#MPAddProduct'),
-        dialog: $('#MPDialog'),
+        confirm: $('#MPDialog'),
         error: $('#MPError'),
         showError: $('#show-error-page'),
         showDelete: $('#show-delete-page')

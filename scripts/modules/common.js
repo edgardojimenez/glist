@@ -3,23 +3,28 @@
     "use strict";
 
     var productFactory = (function () {
-        var ProductFactory = function (id, name) {
-            var self = this;
-            self.id = ko.observable(id);
-            self.name = ko.observable(name);
-            self.removeGrocery = function () {
-                gl.emitter.publish('deletegrocery', self.id())
-            };
-            self.removeProduct = function () {
-                gl.emitter.publish('deleteproduct', self.id())
-            };
-            self.addToGrocery = function () {
-                gl.emitter.publish('addproducttogrocerylist', self.id())
-            };
-            self.toggleCheck = function () {
+        function ProductFactory (id, name) {
+            this.id = ko.observable(id);
+            this.name = ko.observable(name);
+        }
+
+        ProductFactory.prototype = {
+            removeGrocery: function () {
+                gl.emitter.publish('deletegrocery', this.id())
+            },
+
+            removeProduct: function () {
+                gl.emitter.publish('deleteproduct', this.id())
+            },
+
+            addToGrocery: function () {
+                gl.emitter.publish('addproducttogrocerylist', this)
+            },
+
+            toggleCheck: function () {
                 $(arguments[1].currentTarget).find('img.on').toggle();
                 $(arguments[1].currentTarget).find('img.off').toggle();
-            };
+            }
         };
 
         return function (id, name) {

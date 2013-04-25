@@ -35,13 +35,15 @@
 
         ko.applyBindings(groceryVm, gl.cache.groceries.get(0));
 
-        gl.emitter.subscribe('addproducttogrocerylist', onAddProductToGroceryList);
+        gl.emitter.subscribe('completeaddingproducttogrocerylist', onAddProductToGroceryList);
         gl.emitter.subscribe('deletegrocery', deleteGrocery);
     }
 
     function onAddProductToGroceryList(newProduct) {
         groceryVm.groceryArray.push(newProduct);
         groceryVm.isDirty = true;
+
+        persist();
     }
     
     function getGroceries() {
@@ -56,7 +58,7 @@
 
             loadGroceries(data);
 
-            gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
+            persist();
 
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
@@ -65,7 +67,7 @@
 
     function loadGroceries(data) {
         for (var i = 0; i < data.length; i++) {
-            groceryVm.groceryArray.push(gl.common.productFactory(data[i].id || data[i].ProductId,  data[i].name || data[i].ProductName));
+            groceryVm.groceryArray.push(gl.common.productFactory(data[i].id || data[i].productId,  data[i].name || data[i].productName));
         }
 
         if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.groceries.attr('id'))
@@ -85,14 +87,15 @@
 
             gl.cache.groceries.find("#listGrocery").listview("refresh");
 
-            gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
+            persist();
+
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
     }
 
     function clearGroceries() {
-        var $ok = gl.cache.dialog.find('a#ok');
+        var $ok = gl.cache.confirm.find('a#ok');
 
         $ok.off('click');
 
@@ -112,15 +115,19 @@
 
                 gl.emitter.publish('returnproductsbacktolist', productsToReturn);
 
-                gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
+                persist();
 
-                gl.cache.dialog('close');
+                gl.cache.confirm.dialog('close');
             }).always(function() {
                 $.mobile.hidePageLoadingMsg();
             });
         });
 
         gl.cache.showDelete.click();
+    }
+
+    function persist() {
+        gl.common.persist('gl.groceryarray', groceryVm.groceryArray);
     }
 
     gl.groceries = {
