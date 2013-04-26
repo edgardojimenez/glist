@@ -27,7 +27,7 @@
             this.name("");
             this.message("");
             this.addToList(false);
-            $("#addToList").checkboxradio("refresh");
+            //$("#addToList").checkboxradio("refresh");
         },
 
         resetInputs: function () {
@@ -64,6 +64,7 @@
         addProduct(product);
         sortProducts();
         productVm.isDirty = true;
+        persist();
     }
 
     function onReturnProductsBackToList(products) {
@@ -73,6 +74,7 @@
 
         sortProducts();
         productVm.isDirty = true;
+        persist();
     }
 
     function getProducts () {
@@ -135,8 +137,8 @@
         $ok.off('click');
         $ok.on('click', function () {
             return gl.common.getData({
-                url: options.serverUrl + "/home/Products/{0}".format(id),
-                action: 'GET'
+                url: gl.config.environment.serverUrl + "/api/products/{0}".format(id),
+                action: 'DELETE'
             }).done(function () {
                 var product = productVm.productArray.remove(function (item) {
                     return item.id() === parseInt(id, 10);
@@ -145,21 +147,22 @@
                 removeProduct(product[0]);
 
                 gl.cache.products.find("#listProduct").listview();
+                persist();
 
                 gl.cache.confirm.dialog('close');
+            }).always(function () {
+                $.mobile.hidePageLoadingMsg();
             });
-        }).always(function () {
-            $.mobile.hidePageLoadingMsg();
         });
 
-        gl.cache.showError.click();
+        gl.cache.showDelete.click();
     }
 
     function addProductToProductList(name, addToList) {
         return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/home/Products',
+            url: gl.config.environment.serverUrl + '/api/products',
             action: 'POST',
-            data: { product: name, addToList: addToList }
+            data: { name: name, addToList: addToList }
         }).done(function (data) {
             var newProduct;
 
@@ -168,20 +171,23 @@
                 return;
             }
 
-            if (data.Id > 0) {
-                newProduct = gl.common.productFactory(data.Id, data.Name);
+            if (data.id > 0) {
+                newProduct = gl.common.productFactory(data.id, data.name);
 
                 if (addToList) {
-                    gl.emitter.publish('addproducttogrocerylist', newProduct)
+                    gl.emitter.publish('completeaddingproducttogrocerylist', newProduct)
                 } else {
-                    addToProducts(newProduct);
+                    addProduct(newProduct);
                     sortProducts();
                     productVm.isDirty = true;
+                    persist();
                 }
             }
 
-            addProductVm.message(data.Message);
+            addProductVm.message("Added product  '{0}'.".format(data.name));
             addProductVm.resetInputs();
+
+            persist();
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
@@ -200,8 +206,6 @@
         }
 
         productVm.productArray.push(product);
-
-        persist();
     }
 
     function removeProduct(product) {

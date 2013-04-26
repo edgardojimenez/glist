@@ -6,6 +6,7 @@
             groceryArray: ko.observableArray(),
             setEmptyMessage: function () {
                 if (this.groceryArray().length === 0) {
+                    this.isDirty = true;
                     return "No items are on the lists";
                 }
     

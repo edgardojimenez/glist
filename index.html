@@ -78,13 +78,13 @@
                     </div>
                 </div>
                 <div data-role="content" >
-                    <div class="pl5">
+
                         Product Name: <span class="info">(Add a new product)</span>
                         <div class="h2"></div>
                         <input type="text" id="productName" name="productName" maxlength="32" data-bind="value: name" />
-                        <div class="h12"></div>
-                        <input type="checkbox" id="addToList" name="addToList" data-bind="checked : addToList" />
-                    </div>
+                        <div class="h2"></div>
+
+                    <input type="checkbox" id="addToList" name="addToList" class="custom" data-bind="checked: addToList" />
                     <label for="addToList">Include in grocery list.</label>
                     <div class="h2"></div>
                     <a href="#" id="AddProduct" data-role="button" data-bind="click: addProduct">Save</a>
