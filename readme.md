@@ -1,8 +1,6 @@
 #Project Description
-Grocery list is a web base mobile application.  It was written as a POC to play with different technologies.
-
-#Demo
-The demo will show the running version <a href="" >Demo</a>
+Grocery list is a web base mobile application.  
+POC to play with different technologies.
 
 #Technologies
 Client
@@ -15,7 +13,7 @@ Client
 * Labs.js (Loader)
 * medium.js (event emitter)
 
-Backend (not included in this project <a href="" >mobs</a>)
+Backend (not included in this project <a href="https://github.com/edgardojimenez/mobws" >mobs</a>)
 * C#
 * WebApi
 * Dapper
@@ -24,10 +22,14 @@ Backend (not included in this project <a href="" >mobs</a>)
 #Features
 * Single page app
 * Uses html appCache
-* app code is concatenated and minified (coming soon)
-* Using Lab.js to asynchronously load and execute javascript libraries
+* App code is concatenated and minified (coming soon)
+* Using Lab.js to asynchronously load and execute Javascript libraries
 * Using localStorage
 * jQuery mobile for the UI
-* uses medium.js for event emitter
+* Uses medium.js for event emitter
 
-#Todo
+#To do
+* Test
+* Authentication
+* Azure backend
+

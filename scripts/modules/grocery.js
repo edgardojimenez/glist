@@ -1,16 +1,22 @@
-﻿
+﻿/**
+ * User: ejimenez
+ * Date: 3/30/13
+ * Time: 9:31 AM
+ * Grocery module, contains the view models and controller
+ * for the list groceries screens
+ */
 (function (gl, $, ko) {
-    "use strict";
+    'use strict';
 
     var groceryVm = {
             groceryArray: ko.observableArray(),
             setEmptyMessage: function () {
                 if (this.groceryArray().length === 0) {
                     this.isDirty = true;
-                    return "No items are on the lists";
+                    return 'No items are on the lists';
                 }
     
-                return "";
+                return '';
             },
             isDirty: false,
             showList: function () {
@@ -19,13 +25,13 @@
         };
     
     function init(options) {
-        gl.cache.groceries.bind("pageshow", function () {
+        gl.cache.groceries.bind('pageshow', function () {
             $('#body').removeClass('h');
 
             getGroceries();
 
             if (groceryVm.isDirty) {
-                gl.cache.groceries.find("#listGrocery").listview("refresh");
+                gl.cache.groceries.find('#listGrocery').listview('refresh');
                 groceryVm.isDirty = false;
             }
         });
@@ -72,12 +78,12 @@
         }
 
         if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.groceries.attr('id'))
-            gl.cache.groceries.find("#listGrocery").listview("refresh");
+            gl.cache.groceries.find('#listGrocery').listview('refresh');
     }
 
     function deleteGrocery(productId) {
         return gl.common.getData({
-            url: gl.config.environment.serverUrl + "/api/groceries/{0}".format(productId),
+            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
             action: 'DELETE'
         }).done(function () {
             var grocery = groceryVm.groceryArray.remove(function (item) {
@@ -86,7 +92,7 @@
 
             gl.emitter.publish('moveproductbacktolist', grocery[0]);
 
-            gl.cache.groceries.find("#listGrocery").listview("refresh");
+            gl.cache.groceries.find('#listGrocery').listview('refresh');
 
             persist();
 
@@ -102,7 +108,7 @@
 
         $ok.on("click", function () {
             return gl.common.getData({
-                url: gl.config.environment.serverUrl + "/api/groceries",
+                url: gl.config.environment.serverUrl + '/api/groceries',
                 action: 'DELETE'
             }).done(function() {
                 var productsToReturn = [];
@@ -112,7 +118,7 @@
                 });
 
                 groceryVm.groceryArray.removeAll();
-                gl.cache.groceries.find("#listGrocery").listview("refresh");
+                gl.cache.groceries.find('#listGrocery').listview('refresh');
 
                 gl.emitter.publish('returnproductsbacktolist', productsToReturn);
 

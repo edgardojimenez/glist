@@ -7,6 +7,7 @@
  */
 
 (function (gl, win) {
+    'use strict';
 
     function get(key) {
         if (!win.localStorage) return;

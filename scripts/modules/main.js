@@ -1,14 +1,12 @@
 /**
- * Created with JetBrains WebStorm.
  * User: ejimenez
  * Date: 3/30/13
  * Time: 9:31 AM
- * To change this template use File | Settings | File Templates.
  */
 
 
 (function(gl, $) {
-    "use strict";
+    'use strict';
 
     var initialize = {
 

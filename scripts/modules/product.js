@@ -1,6 +1,13 @@
-﻿
+﻿/**
+ * User: ejimenez
+ * Date: 3/30/13
+ * Time: 9:31 AM
+ * Product module, contains the view models and controller
+ * for the list products and add products screens
+ */
+
 (function (gl, $, ko) {
-    "use strict";
+    'use strict';
 
     var productVm = {
         productArray: ko.observableArray(),
@@ -11,43 +18,43 @@
     };
 
     var addProductVm = {
-        name: ko.observable(""),
+        name: ko.observable(''),
         addToList: ko.observable(false),
-        message: ko.observable(""),
+        message: ko.observable(''),
 
         addProduct: function () {
             if (this.name().length > 0) {
                 addProductToProductList(this.name(), this.addToList());
             } else {
-                this.message("No product entered!");
+                this.message('No product entered!');
             }
         },
 
         reset: function () {
-            this.name("");
-            this.message("");
+            this.name('');
+            this.message('');
             this.addToList(false);
-            //$("#addToList").checkboxradio("refresh");
+            //$('#addToList').checkboxradio('refresh');
         },
 
         resetInputs: function () {
-            this.name("");
+            this.name('');
         }
     };
 
     function init(options) {
-        gl.cache.products.bind("pageshow", function () {
+        gl.cache.products.bind('pageshow', function () {
             $('#body').removeClass('h');
 
             getProducts();
 
             if (productVm.isDirty) {
-                gl.cache.products.find("#listProduct").listview("refresh");
+                gl.cache.products.find('#listProduct').listview('refresh');
                 productVm.isDirty = false;
             }
         });
 
-        gl.cache.addProduct.bind("pageshow", function () {
+        gl.cache.addProduct.bind('pageshow', function () {
             addProductVm.reset();
         });
 
@@ -105,7 +112,7 @@
             productVm.productArray.push(gl.common.productFactory(data[i].id, data[i].name));
 
         if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.products.attr('id'))
-            gl.cache.products.find("#listProduct").listview("refresh");
+            gl.cache.products.find('#listProduct').listview('refresh');
     }
 
     function addProductToGroceryList(product) {
@@ -125,7 +132,7 @@
 
             gl.emitter.publish('completeaddingproducttogrocerylist', awayProduct[0]);
 
-            $("#MPProducts").find("#listProduct").listview("refresh");
+            gl.cache.products.find('#listProduct').listview('refresh');
         }).always(function() {
             $.mobile.hidePageLoadingMsg();
         });
@@ -137,7 +144,7 @@
         $ok.off('click');
         $ok.on('click', function () {
             return gl.common.getData({
-                url: gl.config.environment.serverUrl + "/api/products/{0}".format(id),
+                url: gl.config.environment.serverUrl + '/api/products/{0}'.format(id),
                 action: 'DELETE'
             }).done(function () {
                 var product = productVm.productArray.remove(function (item) {
@@ -146,7 +153,7 @@
 
                 removeProduct(product[0]);
 
-                gl.cache.products.find("#listProduct").listview();
+                gl.cache.products.find('#listProduct').listview();
                 persist();
 
                 gl.cache.confirm.dialog('close');
@@ -184,7 +191,7 @@
                 }
             }
 
-            addProductVm.message("Added product  '{0}'.".format(data.name));
+            addProductVm.message('Added product  \'{0}\'.'.format(data.name));
             addProductVm.resetInputs();
 
             persist();

@@ -7,7 +7,7 @@
  */
 
 (function (gl, win) {
-    "use strict";
+    'use strict';
 
     var selected, environment, pages,
         prodHost = 'glist.apphb.com';

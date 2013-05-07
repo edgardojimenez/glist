@@ -7,6 +7,7 @@
  */
 
 (function (gl, $) {
+    'use strict';
 
     gl.cache = {
         groceries: $('#MPGroceries'),

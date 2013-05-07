@@ -1,6 +1,11 @@
-﻿
+﻿/**
+ * User: ejimenez
+ * Date: 3/30/13
+ * Time: 9:31 AM
+ * Common functionality used across application
+ */
 (function (gl, $, ko) {
-    "use strict";
+    'use strict';
 
     var productFactory = (function () {
         function ProductFactory (id, name) {
