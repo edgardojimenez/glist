@@ -1,4 +1,7 @@
-﻿$(document).on('mobileinit', function () {
+﻿/*
+* start of the application
+ */
+$(document).on('mobileinit', function () {
     $.mobile.defaultDialogTransition = 'none';
     $.mobile.defaultPageTransition = 'none';
 

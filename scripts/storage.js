@@ -1,9 +1,7 @@
 /**
- * Created with JetBrains WebStorm.
  * User: ejimenez
  * Date: 3/30/13
  * Time: 8:55 AM
- * To change this template use File | Settings | File Templates.
  */
 
 (function (gl, win) {
@@ -33,4 +31,4 @@
         set: set
     };
 
-})(GL, window)
+})(GL, window);

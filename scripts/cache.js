@@ -1,9 +1,7 @@
 /**
- * Created with JetBrains WebStorm.
  * User: ejimenez
  * Date: 3/20/13
  * Time: 11:44 PM
- * To change this template use File | Settings | File Templates.
  */
 
 (function (gl, $) {

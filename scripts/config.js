@@ -1,9 +1,7 @@
 /**
- * Created with JetBrains WebStorm.
  * User: ejimenez
  * Date: 3/20/13
  * Time: 11:44 PM
- * To change this template use File | Settings | File Templates.
  */
 
 (function (gl, win) {
@@ -17,7 +15,7 @@
             serverUrl: 'http://mobws.apphb.com'
         },
         development: {
-            serverUrl: 'http://localhost:56665'
+            serverUrl: 'http://mobws.apphb.com' //http://localhost:56665'
         },
         stage: {
             serverUrl: ''

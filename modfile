@@ -1,0 +1,123 @@
+
+module.exports = {
+    tasks: {
+        "mkdir" : {
+            "target": "./build"
+        },
+        "replace" : {
+            css: {
+                "source": "./index-debug.html",
+                "dest": "./build/index-temp.html",
+                "search" : '<link rel="stylesheet" href="css/groceries.css" />',
+                "replace" : '<link rel="stylesheet" href="css/groceries.min.css" />'
+            },
+            medium: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/medium.js"\\)\.wait\\(\\)\\r\\n',
+                "replace" : ""
+            },
+            app: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/app.js"\\)\.wait\\(\\)\\r\\n',
+                "replace" : ""
+            },
+            cache: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/cache.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            config: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/config.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            storage: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/storage.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            common: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/common.js"\\)\.wait\\(\\)\\r\\n',
+                "replace" : ""
+            },
+            grocery: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/grocery.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            product: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/product.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            main: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/main.js"\\)\.wait\\(\\)\\r\\n',
+                "replace" : ""
+            },
+            defaults: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/jquery.mobile.defaults.js"\\)\.wait\\(\\)\\r\\n',
+                "replace" : '.script("scripts/all.min.js").wait()\r\n'
+            }
+        },
+        "min" : {
+            "css": {
+                "source": "./css/groceries.css",
+                "dest": "./css/groceries.min.css"
+            },
+            "js": {
+                "source": [
+                    "./build/js/all.js",
+                ],
+                "dest": "./build/js/all.min.js"
+            }
+        },
+        "cat": {
+            "source":[
+                "./scripts/medium.js",
+                "./scripts/app.js",
+                "./scripts/cache.js",
+                "./scripts/config.js",
+                "./scripts/storage.js",
+                "./scripts/modules/common.js",
+                "./scripts/modules/grocery.js",
+                "./scripts/modules/product.js",
+                "./scripts/modules/main.js",
+                "./scripts/jquery.mobile.defaults.js"
+            ],
+            "dest":  "./build/js/all.js"
+        },
+
+        "cp": {
+            "html": {
+                "source": "./build/index-temp.html",
+                "dest": "./index.html"
+            },
+            "js": {
+                "source": "./build/js/all.min.js",
+                "dest": "./scripts/all.min.js"
+            }
+        },
+        "rm": {
+            clean: {
+                target:'./build'
+            },
+        },
+    },
+
+    targets: {
+        dist: "mkdir replace cat min cp rm"
+    }
+};
