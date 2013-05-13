@@ -1,10 +1,10 @@
 ﻿CACHE MANIFEST
-# 2013-05-06:v1
+# 2013-05-13:v1
 
 # Explicitly cached 'master entries'.
 CACHE:
 index.html
-css/groceries.css
+css/groceries.min.css
 http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css
 
 images/check-small.png
