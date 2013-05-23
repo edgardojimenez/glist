@@ -31,10 +31,10 @@
         },
 
         reset: function () {
-            this.name('');
-            this.message('');
-            this.addToList(false);
-            //$('#addToList').checkboxradio('refresh');
+            var me = this;
+            me.name('');
+            me.message('');
+            me.addToList(false);
         },
 
         resetInputs: function () {

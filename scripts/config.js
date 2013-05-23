@@ -12,10 +12,12 @@
 
     environment = {
         production: {
-            serverUrl: 'http://mobws.apphb.com'
+            serverUrl: 'http://mobws.apphb.com',
+            apiKey: '49492ABA-1F13-4E02-8ADC-1206FA203858'
         },
         development: {
-            serverUrl: 'http://mobws.apphb.com' //http://localhost:56665'
+            serverUrl: 'http://localhost:56665',
+            apiKey: '23B5D06B-DC43-42A4-84E2-61A531736155'
         },
         stage: {
             serverUrl: ''

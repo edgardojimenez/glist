@@ -74,7 +74,10 @@
                 type: options.action,
                 url: options.url,
                 dataType: 'json',
-                data: options.data
+                data: options.data,
+                headers: {
+                    'ApiKey': gl.config.environment.apiKey
+                }
             }).fail(function() {
                 errorDialog();
             });
