@@ -76,7 +76,7 @@
                 dataType: 'json',
                 data: options.data,
                 headers: {
-                    'ApiKey': gl.config.environment.apiKey
+                    'X-Api-Key': gl.config.environment.apiKey
                 }
             }).fail(function() {
                 errorDialog();
