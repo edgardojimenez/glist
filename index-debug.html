@@ -12,13 +12,7 @@
         <div id="body" class="h">
             <section id="MPGroceries" data-role="page" >
                 <div data-role="header" data-theme="b" data-position="fixed">
-                    <h1>Grocery List</h1>
-                    <div data-role="navbar" data-iconpos="left" >
-                        <ul>
-                            <li><a href="#" id="clear" data-role="button"  data-icon="star" >New List</a></li>
-                            <li><a href="#MPProducts" data-role="button" data-icon="check"  >Products</a></li>
-                        </ul>
-                    </div>
+                    <h1>Groceries</h1>
                 </div>
                 <div class="ui-scrolllistview" data-role="content"  >
                     <ul id="listGrocery" data-role="listview" data-inset="true" data-theme="c" data-bind="visible: showList, foreach: groceryArray">
@@ -34,20 +28,20 @@
                     </ul>
                 </div>
                 <div id="emptyList" class="pl20" data-bind="text: setEmptyMessage()"></div>
-                <div data-role="footer" class="ui-bar" data-position="fixed">
-                    <h1>Copyright 2013 &copy;</h1>
+                <div data-role="footer" data-position="fixed">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#" id="clear" data-icon="star">New List</a></li>
+                            <li><a href="#MPProducts" data-icon="check">Products</a></li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
             <section id="MPProducts" data-role="page">
                 <div data-role="header" data-theme="b" data-position="fixed">
+                    <a href="#" data-rel="back" data-icon="arrow-l" >Back</a>
                     <h1>Products</h1>
-                    <div data-role="navbar" data-iconpos="left">
-                        <ul>
-                            <li><a href="#MPGroceries" data-icon="home" >List</a></li>
-                            <li><a href="#MPAddProduct" data-icon="plus" >Add</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="ui-scrolllistview" data-role="content" >
                     <ul id="listProduct" data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b" data-filter="true" data-bind="visible: showList, foreach: productArray">
@@ -62,20 +56,20 @@
                         <!-- /ko -->
                     </ul>
                 </div>
-                <div data-role="footer" class="ui-bar" data-position="fixed">
-                    <h1>Copyright 2013 &copy;</h1>
+                <div data-role="footer" data-position="fixed">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#MPGroceries" data-icon="home">List</a></li>
+                            <li><a href="#MPAddProduct" data-icon="plus">Add</a></li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
             <section id="MPAddProduct" data-role="page">
                 <div data-role="header" data-theme="b" data-position="fixed">
+                    <a href="#" data-rel="back" data-icon="arrow-l">Back</a>
                     <h1>Add Products</h1>
-                    <div data-role="navbar" data-iconpos="left">
-                        <ul>
-                            <li><a href="#MPGroceries" data-icon="home" >List</a></li>
-                            <li><a href="#MPProducts" data-icon="check" >Products</a></li>
-                        </ul>
-                    </div>
                 </div>
                 <div data-role="content" >
 
@@ -84,14 +78,19 @@
                         <input type="text" id="productName" name="productName" maxlength="32" data-bind="value: name" />
                         <div class="h2"></div>
 
-                    <input type="checkbox" id="addToList" name="addToList" class="custom" data-bind="checked: addToList" />
+                    <input type="checkbox" id="addToList" name="addToList" class="custom" data-bind="jqmChecked: addToList" />
                     <label for="addToList">Include in grocery list.</label>
                     <div class="h2"></div>
                     <a href="#" id="AddProduct" data-role="button" data-bind="click: addProduct">Save</a>
                     <p class="pl5" id="AddProductMessage" data-bind="text: message"></p>
                 </div>
-                <div data-role="footer" class="ui-bar" data-position="fixed">
-                    <h1>Copyright 2013 &copy;</h1>
+                <div data-role="footer" data-position="fixed">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#MPGroceries" data-icon="home">List</a></li>
+                            <li><a href="#MPProducts" data-icon="check">Products</a></li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 

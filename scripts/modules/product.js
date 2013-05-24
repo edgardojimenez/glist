@@ -19,7 +19,7 @@
 
     var addProductVm = {
         name: ko.observable(''),
-        addToList: ko.observable(false),
+        addToList: ko.observable(),
         message: ko.observable(''),
 
         addProduct: function () {
@@ -31,10 +31,9 @@
         },
 
         reset: function () {
-            var me = this;
-            me.name('');
-            me.message('');
-            me.addToList(false);
+            this.name('');
+            this.message('');
+            this.addToList(false);
         },
 
         resetInputs: function () {
@@ -43,7 +42,11 @@
     };
 
     function init(options) {
-        gl.cache.products.bind('pageshow', function () {
+        gl.cache.products.on('pageinit', function () {
+            ko.applyBindings(productVm, gl.cache.products.get(0));
+        });
+
+        gl.cache.products.on('pageshow', function () {
             $('#body').removeClass('h');
 
             getProducts();
@@ -54,12 +57,41 @@
             }
         });
 
-        gl.cache.addProduct.bind('pageshow', function () {
-            addProductVm.reset();
+        gl.cache.addProduct.on('pageinit', function () {
+            ko.bindingHandlers.jqmChecked = {
+                init: function (element, valueAccessor) {
+
+                    if (element.type != "checkbox") return;
+
+                    var modelValue = valueAccessor();
+
+                    $(element).on('click', function () {
+                        if (ko.utils.unwrapObservable(modelValue))
+                            modelValue(false);
+                        else
+                            modelValue(true);
+                    });
+                },
+
+                update: function (element, valueAccessor) {
+                    if (element.type != "checkbox") return;
+
+                    var unwrappedValue = ko.utils.unwrapObservable(valueAccessor());
+                    if (unwrappedValue === undefined) return;
+
+                    if (unwrappedValue)
+                        $(element).prop('checked', 'checked').checkboxradio('refresh');
+                    else
+                        $(element).removeAttr('checked').checkboxradio('refresh');
+                }
+            };
+
+            ko.applyBindings(addProductVm, gl.cache.addProduct.get(0));
         });
 
-        ko.applyBindings(productVm, gl.cache.products.get(0));
-        ko.applyBindings(addProductVm, gl.cache.addProduct.get(0));
+        gl.cache.addProduct.on('pageshow', function () {
+            addProductVm.reset();
+        });
 
         gl.emitter.subscribe('moveproductbacktolist', onMoveProductBackToList);
         gl.emitter.subscribe('returnproductsbacktolist', onReturnProductsBackToList);
