@@ -13,11 +13,13 @@
     environment = {
         production: {
             serverUrl: 'http://mobws.apphb.com',
-            apiKey: '49492ABA-1F13-4E02-8ADC-1206FA203858'
+            apiKey: '49492ABA-1F13-4E02-8ADC-1206FA203858',
+            ttlMinutes: 1
         },
         development: {
             serverUrl: 'http://localhost:56665',
-            apiKey: '23B5D06B-DC43-42A4-84E2-61A531736155'
+            apiKey: '23B5D06B-DC43-42A4-84E2-61A531736155',
+            ttlMinutes: 1
         },
         stage: {
             serverUrl: ''

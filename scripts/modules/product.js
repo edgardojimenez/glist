@@ -58,6 +58,7 @@
         });
 
         gl.cache.addProduct.on('pageinit', function () {
+            $('#body').removeClass('h');
             ko.bindingHandlers.jqmChecked = {
                 init: function (element, valueAccessor) {
 
@@ -97,6 +98,9 @@
         gl.emitter.subscribe('returnproductsbacktolist', onReturnProductsBackToList);
         gl.emitter.subscribe('deleteproduct', deleteProduct);
         gl.emitter.subscribe('addproducttogrocerylist', addProductToGroceryList);
+        gl.emitter.subscribe('cleararray', function() {
+            productVm.productArray.removeAll();
+        });
     }
 
     function onMoveProductBackToList(product) {

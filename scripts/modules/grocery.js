@@ -44,6 +44,10 @@
 
         gl.emitter.subscribe('completeaddingproducttogrocerylist', onAddProductToGroceryList);
         gl.emitter.subscribe('deletegrocery', deleteGrocery);
+        gl.emitter.subscribe('cleararray', function() {
+            groceryVm.groceryArray.removeAll();
+        });
+
     }
 
     function onAddProductToGroceryList(newProduct) {

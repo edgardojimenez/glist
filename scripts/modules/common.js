@@ -41,11 +41,25 @@
         gl.cache.showError.click();
     }
 
+    function isLocalStorageCacheValid() {
+        var ttl = new Date(gl.storage.get('ttl'));
+        if (!ttl || dateDifferenceMinutes(ttl, new Date()) > gl.config.environment.ttlMinutes) {
+            flushLocalStorage();
+            console.log("Not Valid cache")
+            return false;
+        }
+
+        console.log("Valid cache")
+        return true;
+    }
+
     function persist(key, store) {
         gl.storage.set(key, ko.toJSON(store))
     }
 
     function unPersist(key, store, callback) {
+        if (!isLocalStorageCacheValid()) return false;
+
         if (store().length > 0) return true;
 
         var data = JSON.parse(gl.storage.get(key));
@@ -56,6 +70,17 @@
         }
 
         return false;
+    }
+
+    function flushLocalStorage() {
+        gl.storage.clear();
+        gl.emitter.publish("cleararray");
+        gl.storage.set('ttl', new Date());
+    }
+
+    function dateDifferenceMinutes(earlierDate, laterDate) {
+        var difference = laterDate.getTime() - earlierDate.getTime();
+        return difference/1000/60;
     }
 
     gl.common =  {

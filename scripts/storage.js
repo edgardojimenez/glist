@@ -26,9 +26,14 @@
         return win.localStorage.setItem(key, value);
     }
 
+    function clear() {
+        win.localStorage.clear();
+    }
+
     gl.storage = {
         get: get,
-        set: set
+        set: set,
+        clear: clear
     };
 
 })(GL, window);
