@@ -225,9 +225,12 @@
                     productVm.isDirty = true;
                     persist();
                 }
+
+                addProductVm.message('Added product  \'{0}\'.'.format(data.name));
+            } else if (data.id === -1) {
+                addProductVm.message('Product  \'{0}\' exists.'.format(data.name));
             }
 
-            addProductVm.message('Added product  \'{0}\'.'.format(data.name));
             addProductVm.resetInputs();
 
             persist();
