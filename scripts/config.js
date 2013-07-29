@@ -12,7 +12,7 @@
 
     environment = {
         production: {
-            serverUrl: 'http://mobws.apphb.com',
+            serverUrl: 'http://mobws.azurewebsites.net',
             apiKey: '49492ABA-1F13-4E02-8ADC-1206FA203858',
             ttlMinutes: 1
         },
