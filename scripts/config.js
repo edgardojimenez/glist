@@ -7,7 +7,7 @@
 (function (gl, win) {
     'use strict';
 
-    var selected, environment, pages,
+    var selected, environment,
         localHost = 'localhost';
 
     environment = {
