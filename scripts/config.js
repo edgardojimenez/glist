@@ -8,7 +8,7 @@
     'use strict';
 
     var selected, environment, pages,
-        prodHost = 'glist.apphb.com';
+        localHost = 'localhost';
 
     environment = {
         production: {
@@ -30,10 +30,10 @@
         return selected = environment[env];
     }
 
-    if (win.location.hostname === prodHost) {
-        selected = environment.production;
-    } else {
+    if (win.location.hostname === localHost) {
         selected = environment.development;
+    } else {
+        selected = environment.production;
     }
 
     gl.config = {
