@@ -39,8 +39,18 @@
     }
 
     // Products
-    function getProducts() {
+    function getProducts(isLoaded) {
+        var deferred;
+        if (unPersist('gl.productarray', isLoaded)) {
+            deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
+        }
 
+        return getData({
+            url: gl.config.environment.serverUrl + '/api/products',
+            action: 'GET'
+        });
     }
 
     function deleteProduct() {
@@ -91,6 +101,7 @@
         getGroceries: getGroceries,
         deleteGrocery: deleteGrocery,
         clearGroceries: clearGroceries,
+        getProducts: getProducts,
         persist: persist,
         unPersist: unPersist
     };

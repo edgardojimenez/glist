@@ -49,12 +49,27 @@
         gl.cache.products.on('pageshow', function () {
             $('#body').removeClass('h');
 
-            getProducts();
+            $.mobile.showPageLoadingMsg();
+            var isLoaded = productVm.productArray().length > 0;
+            gl.repo.getProducts(isLoaded)
+                .done(function (data) {
 
-            if (productVm.isDirty) {
-                gl.cache.products.find('#listProduct').listview('refresh');
-                productVm.isDirty = false;
-            }
+                    if (data && data.length > 0) {
+                        loadProducts(data);
+                        persist();
+                    }
+
+                    if (productVm.isDirty) {
+                        gl.cache.products.find('#listProduct').listview('refresh');
+                        productVm.isDirty = false;
+                    }
+
+                }).fail(function() {
+                    gl.common.displayErrorDialog();
+                }).always(function() {
+                    $.mobile.hidePageLoadingMsg();
+                });
+
         });
 
         gl.cache.addProduct.on('pageinit', function () {
@@ -118,30 +133,6 @@
         sortProducts();
         productVm.isDirty = true;
         persist();
-    }
-
-    function getProducts () {
-        $.mobile.showPageLoadingMsg();
-        var isLoaded = productVm.productArray().length > 0;
-        if (gl.repo.unPersist('gl.productarray', isLoaded, loadProducts)) {
-            $.mobile.hidePageLoadingMsg();
-            return;
-        }
-
-        return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/products',
-            action: 'GET'
-        }).done(function (data) {
-            if (data.length === 0)
-                return;
-
-            loadProducts(data);
-
-            persist();
-
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
-        });
     }
 
     function loadProducts(data) {

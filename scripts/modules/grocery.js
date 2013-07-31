@@ -33,7 +33,7 @@
             gl.repo.getGroceries(isLoaded)
                 .done(function (data) {
 
-                    if (data && data.length) {
+                    if (data && data.length > 0) {
                         loadGroceries(data);
                         persist();
                     }
