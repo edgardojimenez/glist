@@ -110,9 +110,61 @@
         });
 
         gl.emitter.subscribe('moveproductbacktolist', onMoveProductBackToList);
+
         gl.emitter.subscribe('returnproductsbacktolist', onReturnProductsBackToList);
-        gl.emitter.subscribe('deleteproduct', deleteProduct);
-        gl.emitter.subscribe('addproducttogrocerylist', addProductToGroceryList);
+
+        gl.emitter.subscribe('deleteproduct', function (id) {
+            var $ok = gl.cache.confirm.find('a#ok');
+
+            $ok.off('click');
+            $ok.on('click', function () {
+                $.mobile.showPageLoadingMsg();
+                gl.repo.deleteProduct(id)
+                    .done(function () {
+                        var product = productVm.productArray.remove(function (item) {
+                            return item.id() === parseInt(id, 10);
+                        });
+
+                        removeProduct(product[0]);
+
+                        gl.cache.products.find('#listProduct').listview();
+                        persist();
+
+                        gl.cache.confirm.dialog('close');
+                    }).fail(function() {
+                        gl.common.displayErrorDialog();
+                    }).always(function() {
+                        $.mobile.hidePageLoadingMsg();
+                    });
+            });
+
+            gl.cache.showDelete.click();
+        });
+
+        gl.emitter.subscribe('addproducttogrocerylist', function (product) {
+            $.mobile.showPageLoadingMsg();
+            gl.repo.addProductToGroceryList(product)
+                .done(function () {
+                    var productId =  parseInt(product.id(), 10);
+
+                    var awayProduct = productVm.productArray.remove(function (item) {
+                        return item.id() === productId;
+                    });
+
+                    removeProduct(awayProduct[0]);
+
+                    persist();
+
+                    gl.emitter.publish('completeaddingproducttogrocerylist', awayProduct[0]);
+
+                    gl.cache.products.find('#listProduct').listview('refresh');
+                }).fail(function() {
+                    gl.common.displayErrorDialog();
+                }).always(function() {
+                    $.mobile.hidePageLoadingMsg();
+                });
+        });
+
         gl.emitter.subscribe('cleararray', function() {
             productVm.productArray.removeAll();
         });
@@ -143,93 +195,42 @@
             gl.cache.products.find('#listProduct').listview('refresh');
     }
 
-    function addProductToGroceryList(product) {
-        return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(product.id()),
-            action: 'GET'
-        }).done(function() {
-            var productId =  parseInt(product.id(), 10);
-
-            var awayProduct = productVm.productArray.remove(function (item) {
-                return item.id() === productId;
-            });
-
-            removeProduct(awayProduct[0]);
-
-            persist();
-
-            gl.emitter.publish('completeaddingproducttogrocerylist', awayProduct[0]);
-
-            gl.cache.products.find('#listProduct').listview('refresh');
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
-        });
-    }
-
-    function deleteProduct(id) {
-        var $ok = gl.cache.confirm.find('a#ok');
-
-        $ok.off('click');
-        $ok.on('click', function () {
-            return gl.common.getData({
-                url: gl.config.environment.serverUrl + '/api/products/{0}'.format(id),
-                action: 'DELETE'
-            }).done(function () {
-                var product = productVm.productArray.remove(function (item) {
-                    return item.id() === parseInt(id, 10);
-                });
-
-                removeProduct(product[0]);
-
-                gl.cache.products.find('#listProduct').listview();
-                persist();
-
-                gl.cache.confirm.dialog('close');
-            }).always(function () {
-                $.mobile.hidePageLoadingMsg();
-            });
-        });
-
-        gl.cache.showDelete.click();
-    }
-
     function addProductToProductList(name, addToList) {
-        return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/products',
-            action: 'POST',
-            data: { name: name, addToList: addToList }
-        }).done(function (data) {
-            var newProduct;
+        $.mobile.showPageLoadingMsg();
+        gl.repo.addProductToProductList(name, addToList)
+            .done(function (data) {
+                var newProduct;
 
-            if (!data) {
-                gl.common.displayErrorDialog();
-                return;
-            }
-
-            if (data.id > 0) {
-                newProduct = gl.common.productFactory(data.id, data.name);
-
-                if (addToList) {
-                    gl.emitter.publish('completeaddingproducttogrocerylist', newProduct)
-                } else {
-                    addProduct(newProduct);
-                    sortProducts();
-                    productVm.isDirty = true;
-                    persist();
+                if (!data) {
+                    gl.common.displayErrorDialog();
+                    return;
                 }
 
-                addProductVm.message('Added product  \'{0}\'.'.format(data.name));
-            } else if (data.id === -1) {
-                addProductVm.message('Product  \'{0}\' exists.'.format(data.name));
-            }
+                if (data.id > 0) {
+                    newProduct = gl.common.productFactory(data.id, data.name);
 
-            addProductVm.resetInputs();
+                    if (addToList) {
+                        gl.emitter.publish('completeaddingproducttogrocerylist', newProduct)
+                    } else {
+                        addProduct(newProduct);
+                        sortProducts();
+                        productVm.isDirty = true;
+                        persist();
+                    }
 
-            persist();
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
-        });
+                    addProductVm.message('Added product  \'{0}\'.'.format(data.name));
+                } else if (data.id === -1) {
+                    addProductVm.message('Product  \'{0}\' exists.'.format(data.name));
+                }
 
+                addProductVm.resetInputs();
+
+                persist();
+            }).fail(function() {
+                gl.common.displayErrorDialog();
+            }).always(function() {
+                $.mobile.hidePageLoadingMsg();
+            });
     }
 
     function addProduct(product) {

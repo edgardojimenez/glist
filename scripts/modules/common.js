@@ -68,23 +68,6 @@
         productFactory: productFactory,
         displayErrorDialog: errorDialog,
         isLocalStorageCacheValid: isLocalStorageCacheValid,
-
-        // todo remove
-        getData: function(options) {
-            $.mobile.showPageLoadingMsg();
-
-            return $.ajax({
-                type: options.action,
-                url: options.url,
-                dataType: 'json',
-                data: options.data,
-                headers: {
-                    'X-Api-Key': gl.config.environment.apiKey
-                }
-            }).fail(function() {
-                errorDialog();
-            });
-        }
     };
 
 })(GL, jQuery, ko);

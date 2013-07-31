@@ -53,16 +53,26 @@
         });
     }
 
-    function deleteProduct() {
-
+    function deleteProduct(id) {
+        return getData({
+            url: gl.config.environment.serverUrl + '/api/products/{0}'.format(id),
+            action: 'DELETE'
+        });
     }
 
-    function addProductToGroceryList() {
-
+    function addProductToGroceryList(product) {
+        return getData({
+            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(product.id()),
+            action: 'GET'
+        });
     }
 
-    function addProductToProductList() {
-
+    function addProductToProductList(name, addToList) {
+        return getData({
+            url: gl.config.environment.serverUrl + '/api/products',
+            action: 'POST',
+            data: { name: name, addToList: addToList }
+        });
     }
 
     // Common
@@ -102,6 +112,9 @@
         deleteGrocery: deleteGrocery,
         clearGroceries: clearGroceries,
         getProducts: getProducts,
+        deleteProduct: deleteProduct,
+        addProductToGroceryList: addProductToGroceryList,
+        addProductToProductList: addProductToProductList,
         persist: persist,
         unPersist: unPersist
     };
