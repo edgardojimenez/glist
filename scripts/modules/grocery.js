@@ -27,20 +27,27 @@
     function init() {
         gl.cache.groceries.bind('pageshow', function () {
             $('#body').removeClass('h');
+            $.mobile.showPageLoadingMsg();
 
             var isLoaded = groceryVm.groceryArray().length > 0
-            gl.repo.getGroceries(isLoaded, function (data) {
+            gl.repo.getGroceries(isLoaded)
+                .done(function (data) {
 
-                if (data && data.length) {
-                    loadGroceries(data);
-                    persist();
-                }
+                    if (data && data.length) {
+                        loadGroceries(data);
+                        persist();
+                    }
 
-                if (groceryVm.isDirty) {
-                    gl.cache.groceries.find('#listGrocery').listview('refresh');
-                    groceryVm.isDirty = false;
-                }
-            });
+                    if (groceryVm.isDirty) {
+                        gl.cache.groceries.find('#listGrocery').listview('refresh');
+                        groceryVm.isDirty = false;
+                    }
+
+                }).fail(function() {
+                    gl.common.displayErrorDialog();
+                }).always(function() {
+                    $.mobile.hidePageLoadingMsg();
+                });
         });
 
         gl.cache.groceries.find('#clear').click(function () {
@@ -49,22 +56,28 @@
             $ok.off('click');
 
             $ok.on("click", function () {
-                gl.repo.clearGroceries(function () {
-                    var productsToReturn = [];
+                $.mobile.showPageLoadingMsg();
+                gl.repo.clearGroceries()
+                    .done(function () {
+                        var productsToReturn = [];
 
-                    ko.utils.arrayForEach(groceryVm.groceryArray(), function (item) {
-                        productsToReturn.push(item);
+                        ko.utils.arrayForEach(groceryVm.groceryArray(), function (item) {
+                            productsToReturn.push(item);
+                        });
+
+                        groceryVm.groceryArray.removeAll();
+                        gl.cache.groceries.find('#listGrocery').listview('refresh');
+
+                        gl.emitter.publish('returnproductsbacktolist', productsToReturn);
+
+                        persist();
+
+                        gl.cache.confirm.dialog('close');
+                    }).fail(function() {
+                        gl.common.displayErrorDialog();
+                    }).always(function() {
+                        $.mobile.hidePageLoadingMsg();
                     });
-
-                    groceryVm.groceryArray.removeAll();
-                    gl.cache.groceries.find('#listGrocery').listview('refresh');
-
-                    gl.emitter.publish('returnproductsbacktolist', productsToReturn);
-
-                    persist();
-
-                    gl.cache.confirm.dialog('close');
-                });
             });
 
             gl.cache.showDelete.click();
@@ -74,17 +87,23 @@
 
         gl.emitter.subscribe('completeaddingproducttogrocerylist', onAddProductToGroceryList);
         gl.emitter.subscribe('deletegrocery', function (productId) {
-            gl.repo.deleteGrocery(productId, function () {
-                var grocery = groceryVm.groceryArray.remove(function (item) {
-                    return item.id() === parseInt(productId, 10);
-                });
+            $.mobile.showPageLoadingMsg();
+            gl.repo.deleteGrocery(productId)
+                .done(function () {
+                    var grocery = groceryVm.groceryArray.remove(function (item) {
+                        return item.id() === parseInt(productId, 10);
+                    });
 
-                gl.emitter.publish('moveproductbacktolist', grocery[0]);
+                    gl.emitter.publish('moveproductbacktolist', grocery[0]);
 
-                gl.cache.groceries.find('#listGrocery').listview('refresh');
+                    gl.cache.groceries.find('#listGrocery').listview('refresh');
 
-                persist();
-            });
+                    persist();
+                }).fail(function() {
+                    gl.common.displayErrorDialog();
+                }).always(function() {
+                    $.mobile.hidePageLoadingMsg();
+                });;
         });
         gl.emitter.subscribe('cleararray', function() {
             groceryVm.groceryArray.removeAll();

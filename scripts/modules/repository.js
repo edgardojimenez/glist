@@ -10,50 +10,50 @@
     'use strict';
 
     // Groceries
-    function getGroceries(isLoaded, callback) {
-        if (unPersist('gl.groceryarray', isLoaded, callback)) {
-            callback();
-            return;
+    function getGroceries(isLoaded) {
+        var deferred;
+        if (unPersist('gl.groceryarray', isLoaded)) {
+            deferred = $.Deferred();
+            deferred.resolve();
+            return deferred.promise();
         }
 
         return getData({
             url: gl.config.environment.serverUrl + '/api/groceries',
             action: 'GET'
-        }).done(function (data) {
-
-            callback(data);
-
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
         });
     }
 
-    function deleteGrocery(productId, callback) {
-        return gl.common.getData({
+    function deleteGrocery(productId) {
+        return getData({
             url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
             action: 'DELETE'
-        }).done(function () {
-
-            callback();
-
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
         });
     }
 
-    function clearGroceries(callback) {
-        return gl.common.getData({
+    function clearGroceries() {
+        return getData({
             url: gl.config.environment.serverUrl + '/api/groceries',
             action: 'DELETE'
-        }).done(function() {
-            callback();
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
         });
     }
 
     // Products
+    function getProducts() {
 
+    }
+
+    function deleteProduct() {
+
+    }
+
+    function addProductToGroceryList() {
+
+    }
+
+    function addProductToProductList() {
+
+    }
 
     // Common
     function persist(key, store) {
@@ -76,8 +76,6 @@
     }
 
     function getData(options) {
-        $.mobile.showPageLoadingMsg();
-
         return $.ajax({
             type: options.action,
             url: options.url,
@@ -86,8 +84,6 @@
             headers: {
                 'X-Api-Key': gl.config.environment.apiKey
             }
-        }).fail(function() {
-            gl.common.displayErrorDialog();
         });
     }
 
