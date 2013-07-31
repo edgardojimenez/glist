@@ -41,7 +41,7 @@
         }
     };
 
-    function init(options) {
+    function init() {
         gl.cache.products.on('pageinit', function () {
             ko.applyBindings(productVm, gl.cache.products.get(0));
         });

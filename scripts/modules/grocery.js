@@ -24,7 +24,7 @@
             }
         };
     
-    function init(options) {
+    function init() {
         gl.cache.groceries.bind('pageshow', function () {
             $('#body').removeClass('h');
 
