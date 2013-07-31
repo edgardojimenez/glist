@@ -26,8 +26,17 @@
         });
     }
 
-    function deleteGrocery() {
+    function deleteGrocery(productId, callback) {
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
+            action: 'DELETE'
+        }).done(function () {
 
+            callback();
+
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
     }
 
     function clearGroceries() {

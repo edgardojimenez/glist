@@ -49,7 +49,19 @@
         ko.applyBindings(groceryVm, gl.cache.groceries.get(0));
 
         gl.emitter.subscribe('completeaddingproducttogrocerylist', onAddProductToGroceryList);
-        gl.emitter.subscribe('deletegrocery', deleteGrocery);
+        gl.emitter.subscribe('deletegrocery', function (productId) {
+            gl.repo.deleteGrocery(productId, function () {
+                var grocery = groceryVm.groceryArray.remove(function (item) {
+                    return item.id() === parseInt(productId, 10);
+                });
+
+                gl.emitter.publish('moveproductbacktolist', grocery[0]);
+
+                gl.cache.groceries.find('#listGrocery').listview('refresh');
+
+                persist();
+            });
+        });
         gl.emitter.subscribe('cleararray', function() {
             groceryVm.groceryArray.removeAll();
         });
@@ -70,26 +82,6 @@
 
         if ($.mobile.activePage && $.mobile.activePage.attr('id') === gl.cache.groceries.attr('id'))
             gl.cache.groceries.find('#listGrocery').listview('refresh');
-    }
-
-    function deleteGrocery(productId) {
-        return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
-            action: 'DELETE'
-        }).done(function () {
-            var grocery = groceryVm.groceryArray.remove(function (item) {
-                return item.id() === parseInt(productId, 10);
-            });
-
-            gl.emitter.publish('moveproductbacktolist', grocery[0]);
-
-            gl.cache.groceries.find('#listGrocery').listview('refresh');
-
-            persist();
-
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
-        });
     }
 
     function clearGroceries() {
