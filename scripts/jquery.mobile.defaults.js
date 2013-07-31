@@ -6,6 +6,6 @@ $(document).on('mobileinit', function () {
     $.mobile.defaultPageTransition = 'none';
 
     GL.cache.groceries.on('pageinit', function () {
-        GL.main.init();
+        GL.init();
     });
 });

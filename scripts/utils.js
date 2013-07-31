@@ -1,4 +1,4 @@
-﻿/**
+/**
  * User: ejimenez
  * Date: 3/20/13
  * Time: 11:44 PM
@@ -21,19 +21,3 @@
     }
 
 })();
-
-
-
-
-
-/**
- * User: ejimenez
- * Date: 3/20/13
- * Time: 11:44 PM
- */
-(function(win) {
-    win.GL = win.GL || {};
-    win.GL.emitter = new win.Medium();
-})(window);
-
-

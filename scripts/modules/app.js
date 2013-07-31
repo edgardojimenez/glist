@@ -1,23 +1,25 @@
+﻿
 /**
  * User: ejimenez
- * Date: 3/30/13
- * Time: 9:31 AM
+ * Date: 3/20/13
+ * Time: 11:44 PM
  */
-
-
-(function(gl, $) {
+(function(win, $) {
     'use strict';
+
+    win.GL = win.GL || {};
+    win.GL.emitter = new win.Medium();
 
     var initialize = {
 
         initGroceriesPage: function () {
             var options = $.extend({}, arguments[0]);
-            gl.groceries.init(options);
+            win.GL.groceries.init(options);
         },
 
         initProductsPage: function () {
             var options = $.extend({}, arguments[0]);
-            gl.products.init(options);
+            win.GL.products.init(options);
         },
 
         initAllPages: function () {
@@ -30,11 +32,6 @@
         return initialize.initAllPages.apply(this, arguments);
     }
 
-    gl.main =  {
-        init: initApp
-    };
+    win.GL.init = initApp;
 
-})(GL, jQuery);
-
-
-
+})(window, jQuery);

@@ -20,31 +20,31 @@ module.exports = {
             app: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/app.js"\\)\.wait\\(\\)\\r\\n',
+                "search" : '\.script\\("scripts/modules/app.js"\\)\.wait\\(\\)\\r\\n',
                 "replace" : ""
             },
             cache: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/cache.js"\\)\\r\\n',
+                "search" : '\.script\\("scripts/modules/cache.js"\\)\\r\\n',
                 "replace" : ""
             },
             config: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/config.js"\\)\\r\\n',
+                "search" : '\.script\\("scripts/modules/config.js"\\)\\r\\n',
                 "replace" : ""
             },
             storage: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/storage.js"\\)\\r\\n',
+                "search" : '\.script\\("scripts/modules/storage.js"\\)\\r\\n',
                 "replace" : ""
             },
             common: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/modules/common.js"\\)\.wait\\(\\)\\r\\n',
+                "search" : '\.script\\("scripts/modules/common.js"\\)\\r\\n',
                 "replace" : ""
             },
             grocery: {
@@ -59,10 +59,10 @@ module.exports = {
                 "search" : '\.script\\("scripts/modules/product.js"\\)\\r\\n',
                 "replace" : ""
             },
-            main: {
+            utils: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
-                "search" : '\.script\\("scripts/modules/main.js"\\)\.wait\\(\\)\\r\\n',
+                "search" : '\.script\\("scripts/utils.js"\\)\\r\\n',
                 "replace" : ""
             },
             defaults: {
@@ -97,14 +97,14 @@ module.exports = {
         "cat": {
             "source":[
                 "./scripts/medium.js",
-                "./scripts/app.js",
-                "./scripts/cache.js",
-                "./scripts/config.js",
-                "./scripts/storage.js",
+                "./scripts/modules/app.js",
+                "./scripts/modules/cache.js",
+                "./scripts/modules/config.js",
+                "./scripts/modules/storage.js",
                 "./scripts/modules/common.js",
                 "./scripts/modules/grocery.js",
                 "./scripts/modules/product.js",
-                "./scripts/modules/main.js",
+                "./scripts/utils.js",
                 "./scripts/jquery.mobile.defaults.js"
             ],
             "dest":  "./build/js/all.js"
