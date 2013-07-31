@@ -53,25 +53,6 @@
         return true;
     }
 
-    function persist(key, store) {
-        gl.storage.set(key, ko.toJSON(store))
-    }
-
-    function unPersist(key, loaded, callback) {
-        if (!isLocalStorageCacheValid()) return false;
-
-        if (loaded) return true;
-
-        var data = JSON.parse(gl.storage.get(key));
-
-        if (data && data.length > 0) {
-            callback(data);
-            return true;
-        }
-
-        return false;
-    }
-
     function flushLocalStorage() {
         gl.storage.clear();
         gl.emitter.publish("cleararray");
@@ -85,13 +66,10 @@
 
     gl.common =  {
         productFactory: productFactory,
-
         displayErrorDialog: errorDialog,
+        isLocalStorageCacheValid: isLocalStorageCacheValid,
 
-        persist: persist,
-
-        unPersist: unPersist,
-
+        // todo remove
         getData: function(options) {
             $.mobile.showPageLoadingMsg();
 

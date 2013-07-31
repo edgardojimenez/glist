@@ -123,7 +123,7 @@
     function getProducts () {
         $.mobile.showPageLoadingMsg();
         var isLoaded = productVm.productArray().length > 0;
-        if (gl.common.unPersist('gl.productarray', isLoaded, loadProducts)) {
+        if (gl.repo.unPersist('gl.productarray', isLoaded, loadProducts)) {
             $.mobile.hidePageLoadingMsg();
             return;
         }
@@ -279,7 +279,7 @@
     }
 
     function persist() {
-        gl.common.persist('gl.productarray', productVm.productArray);
+        gl.repo.persist('gl.productarray', ko.toJSON(productVm.productArray));
     }
 
     gl.products =  {

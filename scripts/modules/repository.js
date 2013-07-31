@@ -9,15 +9,17 @@
 (function (gl, $) {
     'use strict';
 
+    // Groceries
     function getGroceries(isLoaded, callback) {
-        if (gl.common.unPersist('gl.groceryarray', isLoaded, callback)) return;
+        if (unPersist('gl.groceryarray', isLoaded, callback)) {
+            callback();
+            return;
+        }
 
         return getData({
             url: gl.config.environment.serverUrl + '/api/groceries',
             action: 'GET'
         }).done(function (data) {
-            if (data.length === 0)
-                return;
 
             callback(data);
 
@@ -39,8 +41,38 @@
         });
     }
 
-    function clearGroceries() {
+    function clearGroceries(callback) {
+        return gl.common.getData({
+            url: gl.config.environment.serverUrl + '/api/groceries',
+            action: 'DELETE'
+        }).done(function() {
+            callback();
+        }).always(function() {
+            $.mobile.hidePageLoadingMsg();
+        });
+    }
 
+    // Products
+
+
+    // Common
+    function persist(key, store) {
+        gl.storage.set(key, store)
+    }
+
+    function unPersist(key, loaded, callback) {
+        if (!gl.common.isLocalStorageCacheValid()) return false;
+
+        if (loaded) return true;
+
+        var data = JSON.parse(gl.storage.get(key));
+
+        if (data && data.length > 0) {
+            callback(data);
+            return true;
+        }
+
+        return false;
     }
 
     function getData(options) {
@@ -62,7 +94,9 @@
     gl.repo = {
         getGroceries: getGroceries,
         deleteGrocery: deleteGrocery,
-        clearGroceries: clearGroceries
+        clearGroceries: clearGroceries,
+        persist: persist,
+        unPersist: unPersist
     };
 
 })(GL, jQuery);
