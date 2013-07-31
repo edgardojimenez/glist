@@ -122,7 +122,8 @@
 
     function getProducts () {
         $.mobile.showPageLoadingMsg();
-        if (gl.common.unPersist('gl.productarray', productVm.productArray, loadProducts)) {
+        var isLoaded = productVm.productArray().length > 0;
+        if (gl.common.unPersist('gl.productarray', isLoaded, loadProducts)) {
             $.mobile.hidePageLoadingMsg();
             return;
         }

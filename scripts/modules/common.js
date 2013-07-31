@@ -57,10 +57,10 @@
         gl.storage.set(key, ko.toJSON(store))
     }
 
-    function unPersist(key, store, callback) {
+    function unPersist(key, loaded, callback) {
         if (!isLocalStorageCacheValid()) return false;
 
-        if (store().length > 0) return true;
+        if (loaded) return true;
 
         var data = JSON.parse(gl.storage.get(key));
 

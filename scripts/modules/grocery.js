@@ -28,12 +28,18 @@
         gl.cache.groceries.bind('pageshow', function () {
             $('#body').removeClass('h');
 
-            getGroceries();
+            var isLoaded = groceryVm.groceryArray().length > 0
+            gl.repo.getGroceries(isLoaded, function (data) {
 
-            if (groceryVm.isDirty) {
-                gl.cache.groceries.find('#listGrocery').listview('refresh');
-                groceryVm.isDirty = false;
-            }
+                loadGroceries(data);
+
+                persist();
+
+                if (groceryVm.isDirty) {
+                    gl.cache.groceries.find('#listGrocery').listview('refresh');
+                    groceryVm.isDirty = false;
+                }
+            });
         });
 
         gl.cache.groceries.find('#clear').click(function () {
@@ -55,25 +61,6 @@
         groceryVm.isDirty = true;
 
         persist();
-    }
-    
-    function getGroceries() {
-        if (gl.common.unPersist('gl.groceryarray', groceryVm.groceryArray, loadGroceries)) return;
-
-        return gl.common.getData({
-            url: gl.config.environment.serverUrl + '/api/groceries',
-            action: 'GET'
-        }).done(function (data) {
-            if (data.length === 0)
-                return;
-
-            loadGroceries(data);
-
-            persist();
-
-        }).always(function() {
-            $.mobile.hidePageLoadingMsg();
-        });
     }
 
     function loadGroceries(data) {
