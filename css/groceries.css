@@ -1,5 +1,10 @@
 ﻿
-body { background-image: url(../images/cart.png);background-repeat:no-repeat;background-position: center center;}
+body { background-image: url(../images/cart.png);
+    background-repeat:no-repeat;
+    background-position: center;
+    background-attachment:fixed;
+    width: 100%;
+}
 .h { display:none;}
 .info { font-style:italic; font-size:8pt; color:#1C5180;}
 .h12 {height:12px;}

@@ -45,31 +45,10 @@
         var ttl = new Date(gl.storage.get('ttl'));
         if (!ttl || dateDifferenceMinutes(ttl, new Date()) > gl.config.environment.ttlMinutes) {
             flushLocalStorage();
-            console.log("Not Valid cache")
             return false;
         }
 
-        console.log("Valid cache")
         return true;
-    }
-
-    function persist(key, store) {
-        gl.storage.set(key, ko.toJSON(store))
-    }
-
-    function unPersist(key, store, callback) {
-        if (!isLocalStorageCacheValid()) return false;
-
-        if (store().length > 0) return true;
-
-        var data = JSON.parse(gl.storage.get(key));
-
-        if (data && data.length > 0) {
-            callback(data);
-            return true;
-        }
-
-        return false;
     }
 
     function flushLocalStorage() {
@@ -85,28 +64,8 @@
 
     gl.common =  {
         productFactory: productFactory,
-
         displayErrorDialog: errorDialog,
-
-        persist: persist,
-
-        unPersist: unPersist,
-
-        getData: function(options) {
-            $.mobile.showPageLoadingMsg();
-
-            return $.ajax({
-                type: options.action,
-                url: options.url,
-                dataType: 'json',
-                data: options.data,
-                headers: {
-                    'X-Api-Key': gl.config.environment.apiKey
-                }
-            }).fail(function() {
-                errorDialog();
-            });
-        }
+        isLocalStorageCacheValid: isLocalStorageCacheValid,
     };
 
 })(GL, jQuery, ko);
