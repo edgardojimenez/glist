@@ -11,6 +11,12 @@ module.exports = {
                 "search" : 'css/groceries.css',
                 "replace" : 'css/groceries.min.css'
             },
+            manifest: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '<html>\\r\\n',
+                "replace" : '<html manifest="manifest.appcache">\r\n'
+            },
             medium: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
@@ -90,9 +96,7 @@ module.exports = {
                 "dest": "./css/groceries.min.css"
             },
             "js": {
-                "source": [
-                    "./build/js/all.js",
-                ],
+                "source": "./build/js/all.js",
                 "dest": "./build/js/all.min.js"
             },
             "html": {
