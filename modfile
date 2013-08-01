@@ -23,6 +23,12 @@ module.exports = {
                 "search" : '\.script\\("scripts/modules/app.js"\\)\.wait\\(\\)\\r\\n',
                 "replace" : ""
             },
+             repo: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/repository.js"\\)\\r\\n',
+                "replace" : ""
+            },
             cache: {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
@@ -98,6 +104,7 @@ module.exports = {
             "source":[
                 "./scripts/medium.js",
                 "./scripts/modules/app.js",
+                "./scripts/modules/repository.js",
                 "./scripts/modules/cache.js",
                 "./scripts/modules/config.js",
                 "./scripts/modules/storage.js",
