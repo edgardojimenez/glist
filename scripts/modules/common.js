@@ -45,11 +45,9 @@
         var ttl = new Date(gl.storage.get('ttl'));
         if (!ttl || dateDifferenceMinutes(ttl, new Date()) > gl.config.environment.ttlMinutes) {
             flushLocalStorage();
-            console.log("Not Valid cache")
             return false;
         }
 
-        console.log("Valid cache")
         return true;
     }
 

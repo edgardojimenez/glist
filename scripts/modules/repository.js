@@ -9,24 +9,38 @@
 (function (gl, $) {
     'use strict';
 
-    // Groceries
-    function getGroceries(isLoaded) {
-        var deferred;
-        if (unPersist('gl.groceryarray', isLoaded)) {
+    function get(key, loaded) {
+        var data,
             deferred = $.Deferred();
-            deferred.resolve();
+
+        if (!gl.common.isLocalStorageCacheValid()) {
+            return getDb(key);
+        }
+
+        if (loaded) {
+            deferred.resolve(null);
             return deferred.promise();
         }
 
+        data = JSON.parse(gl.storage.get('gl.' + key));
+        if (data && data.length > 0) {
+            deferred.resolve(data)
+            return deferred.promise();
+        }
+
+        return getDb(key);
+    }
+
+    function getDb(key) {
         return getData({
-            url: gl.config.environment.serverUrl + '/api/groceries',
+            url: gl.config.environment.serverUrl + '/api/{0}'.format(key),
             action: 'GET'
         });
     }
 
-    function deleteGrocery(productId) {
+    function remove(key, id) {
         return getData({
-            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
+            url: gl.config.environment.serverUrl + '/api/{0}/{1}'.format(key, id),
             action: 'DELETE'
         });
     }
@@ -34,28 +48,6 @@
     function clearGroceries() {
         return getData({
             url: gl.config.environment.serverUrl + '/api/groceries',
-            action: 'DELETE'
-        });
-    }
-
-    // Products
-    function getProducts(isLoaded) {
-        var deferred;
-        if (unPersist('gl.productarray', isLoaded)) {
-            deferred = $.Deferred();
-            deferred.resolve();
-            return deferred.promise();
-        }
-
-        return getData({
-            url: gl.config.environment.serverUrl + '/api/products',
-            action: 'GET'
-        });
-    }
-
-    function deleteProduct(id) {
-        return getData({
-            url: gl.config.environment.serverUrl + '/api/products/{0}'.format(id),
             action: 'DELETE'
         });
     }
@@ -80,21 +72,6 @@
         gl.storage.set(key, store)
     }
 
-    function unPersist(key, loaded, callback) {
-        if (!gl.common.isLocalStorageCacheValid()) return false;
-
-        if (loaded) return true;
-
-        var data = JSON.parse(gl.storage.get(key));
-
-        if (data && data.length > 0) {
-            callback(data);
-            return true;
-        }
-
-        return false;
-    }
-
     function getData(options) {
         return $.ajax({
             type: options.action,
@@ -108,15 +85,12 @@
     }
 
     gl.repo = {
-        getGroceries: getGroceries,
-        deleteGrocery: deleteGrocery,
+        get: get,
+        remove: remove,
         clearGroceries: clearGroceries,
-        getProducts: getProducts,
-        deleteProduct: deleteProduct,
         addProductToGroceryList: addProductToGroceryList,
         addProductToProductList: addProductToProductList,
-        persist: persist,
-        unPersist: unPersist
+        persist: persist
     };
 
 })(GL, jQuery);
