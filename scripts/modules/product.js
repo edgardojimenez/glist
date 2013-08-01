@@ -42,9 +42,7 @@
     };
 
     function init() {
-        gl.cache.products.on('pageinit', function () {
-            ko.applyBindings(productVm, gl.cache.products.get(0));
-        });
+        ko.applyBindings(productVm, gl.cache.products.get(0));
 
         gl.cache.products.on('pageshow', function () {
             $('#body').removeClass('h');
