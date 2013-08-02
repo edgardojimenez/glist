@@ -264,7 +264,7 @@
     }
 
     function persist() {
-        gl.repo.persist('gl.productarray', ko.toJSON(productVm.productArray));
+        gl.repo.persist('gl.products', ko.toJSON(productVm.productArray));
     }
 
     gl.products =  {

@@ -123,7 +123,7 @@
     }
 
     function persist() {
-        gl.repo.persist('gl.groceryarray', ko.toJSON(groceryVm.groceryArray));
+        gl.repo.persist('gl.groceries', ko.toJSON(groceryVm.groceryArray));
     }
 
     gl.groceries = {
