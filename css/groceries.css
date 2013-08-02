@@ -1,10 +1,15 @@
-﻿
-html { background-image: url(../images/cart.png);
-    background-repeat:no-repeat;
-    background-position: center;
-    background-attachment:fixed;
-    width: 100%;
+﻿html{
+    background-color: transparent !important;
+    background-image: url(../images/cart.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
+
 .h { display:none;}
 .info { font-style:italic; font-size:8pt; color:#1C5180;}
 .h12 {height:12px;}
