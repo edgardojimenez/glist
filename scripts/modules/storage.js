@@ -26,8 +26,8 @@
         return win.localStorage.setItem(key, value);
     }
 
-    function clear() {
-        win.localStorage.clear();
+    function clear(key) {
+        win.localStorage.removeItem(key);
     }
 
     gl.storage = {

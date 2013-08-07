@@ -13,7 +13,11 @@
         var data,
             deferred = $.Deferred();
 
-        if (!gl.common.isLocalStorageCacheValid()) {
+        deferred
+            .fail(gl.common.displayErrorDialog)
+            .always(gl.common.hideLoading);
+
+        if (gl.common.hasLocalStorageCacheExpired(key)) {
             return getDb(key);
         }
 
@@ -81,7 +85,7 @@
             headers: {
                 'X-Api-Key': gl.config.environment.apiKey
             }
-        });
+        }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
     }
 
     gl.repo = {

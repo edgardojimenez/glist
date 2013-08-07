@@ -41,20 +41,30 @@
         gl.cache.showError.click();
     }
 
-    function isLocalStorageCacheValid() {
-        var ttl = new Date(gl.storage.get('ttl'));
-        if (!ttl || dateDifferenceMinutes(ttl, new Date()) > gl.config.environment.ttlMinutes) {
-            flushLocalStorage();
-            return false;
-        }
-
-        return true;
+    function hideLoading() {
+        $.mobile.hidePageLoadingMsg();
     }
 
-    function flushLocalStorage() {
-        gl.storage.clear();
-        gl.emitter.publish("cleararray");
-        gl.storage.set('ttl', new Date());
+    function showLoading() {
+        $.mobile.showPageLoadingMsg();
+    }
+
+    function hasLocalStorageCacheExpired(key) {
+        var ttlType = "ttl." + key;
+        var ttl = new Date(gl.storage.get(ttlType));
+        if (!ttl || dateDifferenceMinutes(ttl, new Date()) > gl.config.environment.ttlMinutes) {
+            flushLocalStorage(key);
+            return true;
+        }
+
+        return false;
+    }
+
+    function flushLocalStorage(key) {
+        gl.storage.clear('ttl.' + key);
+        gl.storage.clear('gl' + key);
+        gl.emitter.publish("clearstorage" + key);
+        gl.storage.set('ttl.' + key, new Date());
     }
 
     function dateDifferenceMinutes(earlierDate, laterDate) {
@@ -65,7 +75,9 @@
     gl.common =  {
         productFactory: productFactory,
         displayErrorDialog: errorDialog,
-        isLocalStorageCacheValid: isLocalStorageCacheValid,
+        hasLocalStorageCacheExpired: hasLocalStorageCacheExpired,
+        showLoading: showLoading,
+        hideLoading: hideLoading
     };
 
 })(GL, jQuery, ko);
