@@ -9,74 +9,45 @@
 (function (gl, $) {
     'use strict';
 
-    function get(key, loaded) {
-        var data,
-            deferred = $.Deferred();
+    function getData(key) {
+        var urlPartial = key === 'groceries' ? '/api/{0}'.format(key) : '/api/products/filtered';
 
-        deferred
-            .fail(gl.common.displayErrorDialog)
-            .always(gl.common.hideLoading);
-
-        if (gl.common.hasLocalStorageCacheExpired(key)) {
-            return getDb(key);
-        }
-
-        if (loaded) {
-            deferred.resolve(null);
-            return deferred.promise();
-        }
-
-        data = JSON.parse(gl.storage.get('gl.' + key));
-        if (data && data.length > 0) {
-            deferred.resolve(data)
-            return deferred.promise();
-        }
-
-        return getDb(key);
-    }
-
-    function getDb(key) {
-        return getData({
-            url: gl.config.environment.serverUrl + '/api/{0}'.format(key),
+        return getRemote({
+            url: gl.config.environment.serverUrl + urlPartial,
             action: 'GET'
         });
     }
 
     function remove(key, id) {
-        return getData({
+        return getRemote({
             url: gl.config.environment.serverUrl + '/api/{0}/{1}'.format(key, id),
             action: 'DELETE'
         });
     }
 
     function clearGroceries() {
-        return getData({
+        return getRemote({
             url: gl.config.environment.serverUrl + '/api/groceries',
             action: 'DELETE'
         });
     }
 
-    function addProductToGroceryList(product) {
-        return getData({
-            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(product.id()),
+    function addProductToGroceryList(productId) {
+        return getRemote({
+            url: gl.config.environment.serverUrl + '/api/groceries/{0}'.format(productId),
             action: 'GET'
         });
     }
 
     function addProductToProductList(name, addToList) {
-        return getData({
+        return getRemote({
             url: gl.config.environment.serverUrl + '/api/products',
             action: 'POST',
             data: { name: name, addToList: addToList }
         });
     }
 
-    // Common
-    function persist(key, store) {
-        gl.storage.set(key, store)
-    }
-
-    function getData(options) {
+    function getRemote(options) {
         return $.ajax({
             type: options.action,
             url: options.url,
@@ -85,16 +56,15 @@
             headers: {
                 'X-Api-Key': gl.config.environment.apiKey
             }
-        }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
+        });
     }
 
     gl.repo = {
-        get: get,
+        getData: getData,
         remove: remove,
         clearGroceries: clearGroceries,
         addProductToGroceryList: addProductToGroceryList,
-        addProductToProductList: addProductToProductList,
-        persist: persist
+        addProductToProductList: addProductToProductList
     };
 
 })(GL, jQuery);

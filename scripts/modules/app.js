@@ -8,11 +8,12 @@
     'use strict';
 
     win.GL = win.GL || {};
-    win.GL.emitter = new win.Medium();
 
-    win.GL.init = function () {
-        win.GL.groceries.init();
-        win.GL.products.init();
+    GL.emitter = new Medium();
+
+    GL.init = function () {
+        GL.groceries.init();
+        GL.products.init();
     };
 
 })(window);

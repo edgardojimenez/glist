@@ -4,6 +4,7 @@ module.exports = {
         "mkdir" : {
             "target": "./build"
         },
+
         "replace" : {
             css: {
                 "source": "./index-debug.html",
@@ -33,6 +34,12 @@ module.exports = {
                 "source": "./build/index-temp.html",
                 "dest": "./build/index-temp.html",
                 "search" : '\.script\\("scripts/modules/repository.js"\\)\\r\\n',
+                "replace" : ""
+            },
+            service: {
+                "source": "./build/index-temp.html",
+                "dest": "./build/index-temp.html",
+                "search" : '\.script\\("scripts/modules/service.js"\\)\\r\\n',
                 "replace" : ""
             },
             cache: {
@@ -90,6 +97,7 @@ module.exports = {
                 "replace" : '# updated ' + new Date()
             }
         },
+
         "min" : {
             "css": {
                 "source": "./css/groceries.css",
@@ -104,11 +112,13 @@ module.exports = {
                 "dest": "./build/index.html"
             }
         },
+
         "cat": {
             "source":[
                 "./scripts/medium.js",
                 "./scripts/modules/app.js",
                 "./scripts/modules/repository.js",
+                "./scripts/modules/service.js",
                 "./scripts/modules/cache.js",
                 "./scripts/modules/config.js",
                 "./scripts/modules/storage.js",
@@ -131,11 +141,12 @@ module.exports = {
                 "dest": "./scripts/all.min.js"
             }
         },
+
         "rm": {
             clean: {
                 target:'./build'
-            },
-        },
+            }
+        }
     },
 
     targets: {

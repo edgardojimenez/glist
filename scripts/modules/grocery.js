@@ -30,7 +30,7 @@
 
             gl.common.showLoading();
             var isLoaded = groceryVm.groceryArray().length > 0
-            gl.repo.get('groceries', isLoaded).done(function (data) {
+            gl.service.get('groceries', isLoaded).done(function (data) {
 
                 if (data && data.length > 0) {
                     loadGroceries(data);
@@ -42,7 +42,7 @@
                     groceryVm.isDirty = false;
                 }
 
-            });
+            }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
         });
 
         gl.cache.groceries.find('#clear').click(function () {
@@ -52,7 +52,7 @@
 
             $ok.on("click", function () {
                 gl.common.showLoading();
-                gl.repo.clearGroceries().done(function () {
+                gl.service.clearGroceries().done(function () {
                     var productsToReturn = [];
 
                     ko.utils.arrayForEach(groceryVm.groceryArray(), function (item) {
@@ -67,7 +67,7 @@
                     persist();
 
                     gl.cache.confirm.dialog('close');
-                });
+                }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
             });
 
             gl.cache.showDelete.click();
@@ -79,7 +79,7 @@
 
         gl.emitter.subscribe('deletegrocery', function (productId) {
             gl.common.showLoading();
-            gl.repo.remove('groceries', productId).done(function () {
+            gl.service.remove('groceries', productId).done(function () {
                 var grocery = groceryVm.groceryArray.remove(function (item) {
                     return item.id() === parseInt(productId, 10);
                 });
@@ -89,7 +89,7 @@
                 gl.cache.groceries.find('#listGrocery').listview('refresh');
 
                 persist();
-            });
+            }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
         });
 
         gl.emitter.subscribe('clearstoragegroceries', function() {
@@ -113,7 +113,7 @@
     }
 
     function persist() {
-        gl.repo.persist('gl.groceries', ko.toJSON(groceryVm.groceryArray));
+        gl.service.persist('gl.groceries', ko.toJSON(groceryVm.groceryArray));
     }
 
     gl.groceries = {

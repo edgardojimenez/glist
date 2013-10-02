@@ -49,7 +49,7 @@
 
             gl.common.showLoading();
             var isLoaded = productVm.productArray().length > 0;
-            gl.repo.get('products', isLoaded).done(function (data) {
+            gl.service.get('products', isLoaded).done(function (data) {
 
                 if (data && data.length > 0) {
                     loadProducts(data);
@@ -61,7 +61,7 @@
                     productVm.isDirty = false;
                 }
 
-            });
+            }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
         });
 
         gl.cache.addProduct.on('pageinit', function () {
@@ -111,7 +111,7 @@
             $ok.off('click');
             $ok.on('click', function () {
                 gl.common.showLoading();
-                gl.repo.remove('products', id).done(function () {
+                gl.service.remove('products', id).done(function () {
                     var product = productVm.productArray.remove(function (item) {
                         return item.id() === parseInt(id, 10);
                     });
@@ -122,7 +122,7 @@
                     persist();
 
                     gl.cache.confirm.dialog('close');
-                });
+                }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
             });
 
             gl.cache.showDelete.click();
@@ -130,8 +130,9 @@
 
         gl.emitter.subscribe('addproducttogrocerylist', function (product) {
             gl.common.showLoading();
-            gl.repo.addProductToGroceryList(product).done(function () {
-                var productId =  parseInt(product.id(), 10);
+            var id = product.id();
+            gl.service.addProductToGroceryList(id).done(function () {
+                var productId =  parseInt(id, 10);
 
                 var awayProduct = productVm.productArray.remove(function (item) {
                     return item.id() === productId;
@@ -144,7 +145,8 @@
                 gl.emitter.publish('completeaddingproducttogrocerylist', awayProduct[0]);
 
                 gl.cache.products.find('#listProduct').listview('refresh');
-            });
+
+            }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);
         });
 
         gl.emitter.subscribe('clearstorageproducts', function() {
@@ -178,7 +180,7 @@
 
     function addProductToProductList(name, addToList) {
         gl.common.showLoading();
-        gl.repo.addProductToProductList(name, addToList).done(function (data) {
+        gl.service.addProductToProductList(name, addToList).done(function (data) {
             var newProduct;
 
             if (!data) {
@@ -206,7 +208,7 @@
             addProductVm.resetInputs();
 
             persist();
-        });
+        }).fail(gl.common.displayErrorDialog).always(gl.common.hideLoading);;
     }
 
     function addProduct(product) {
@@ -247,7 +249,7 @@
     }
 
     function persist() {
-        gl.repo.persist('gl.products', ko.toJSON(productVm.productArray));
+        gl.service.persist('gl.products', ko.toJSON(productVm.productArray));
     }
 
     gl.products =  {
