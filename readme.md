@@ -4,7 +4,7 @@ POC to play with different technologies.
 
 #Technologies
 Client
-* Web base
+* Web based
 * Javascript
 * jQuery Mobile, jQuery
 * Knockout.js
