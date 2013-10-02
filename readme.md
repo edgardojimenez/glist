@@ -4,32 +4,33 @@ POC to play with different technologies.
 
 #Technologies
 Client
-* HTML5
-* CSS
+* Web base
 * Javascript
-* jQuery Mobile
-* jQuery
+* jQuery Mobile, jQuery
 * Knockout.js
 * Labs.js (Loader)
-* medium.js (event emitter)
+* medium.js (Event emitter)
+* modjs (Build)
+* mocha.js (Test)
 
 Backend (not included in this project <a href="https://github.com/edgardojimenez/mobws" >mobs</a>)
 * C#
 * WebApi
 * Dapper
 * SQL Server
+* MS Test
 
 #Features
 * Single page app
-* Uses html appCache
-* App code is concatenated and minified (coming soon)
-* Using Lab.js to asynchronously load and execute Javascript libraries
-* Using localStorage
-* jQuery mobile for the UI
-* Uses medium.js for event emitter
+* mobile web app
+* Build process
+* jQuery mobile UI
+* CORS support
+* Unit tests
+* Hosted on Azure (websites) and AppHarbor
 
-#To do
-* Test
+#Todo
+* More Test
 * Authentication
-* Azure backend
+
 
