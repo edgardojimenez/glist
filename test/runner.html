@@ -1,0 +1,42 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mocha Tests</title>
+	<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+<div id="mocha"></div>
+
+<script src="../node_modules/expect.js/expect.js"></script>
+<script src="../node_modules/mocha/mocha.js"></script>
+<script>
+	mocha.setup({ ui: 'bdd', ignoreLeaks: true })
+</script>
+
+<!-- Scripts -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="../scripts/medium.js"></script>
+<script src="../scripts/modules/app.js"></script>
+<script src="../scripts/modules/repository.js"></script>
+<script src="../scripts/modules/service.js"></script>
+<script src="../scripts/modules/cache.js"></script>
+<script src="../scripts/modules/config.js"></script>
+<script src="../scripts/modules/storage.js"></script>
+<script src="../scripts/modules/common.js"></script>
+<script src="../scripts/modules/grocery.js"></script>
+<script src="../scripts/modules/product.js"></script>
+<script src="../scripts/utils.js"></script>
+<script src="../scripts/jquery.mobile.defaults.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+
+<!-- Test -->
+<script src="modules/app.js"></script>
+<script src="modules/repository.js"></script>
+
+<!-- Runner -->
+<script>
+	mocha.run();
+</script>
+</body>
+</html>
