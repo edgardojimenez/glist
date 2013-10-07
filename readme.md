@@ -1,10 +1,10 @@
 #Project Description
-Grocery list is a web base mobile application.  
+Grocery list is a mobile web application.
 POC to play with different technologies.
 
 #Technologies
 Client
-* Web based
+* Web based Mobile
 * Javascript
 * jQuery Mobile, jQuery
 * Knockout.js
@@ -15,7 +15,7 @@ Client
 
 Backend (not included in this project <a href="https://github.com/edgardojimenez/mobws" >mobs</a>)
 * C#
-* WebApi
+* Asp.net Web API
 * Dapper
 * SQL Server
 * MS Test
