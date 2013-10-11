@@ -134,7 +134,8 @@ module.exports = {
         "cp": {
             "html": {
                 "source": "./build/index.html",
-                "dest": "./index.html"
+                "dest": "./index.html",
+                "backup": false
             },
             "js": {
                 "source": "./build/js/all.min.js",
@@ -144,7 +145,7 @@ module.exports = {
 
         "rm": {
             clean: {
-                target:'./build'
+                target: './build'
             }
         }
     },

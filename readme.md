@@ -30,7 +30,7 @@ Backend (not included in this project <a href="https://github.com/edgardojimenez
 * Hosted on Azure (websites) and AppHarbor
 
 #Todo
-* More Test
+* More Tests
 * Authentication
 
 
