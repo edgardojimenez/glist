@@ -3,11 +3,6 @@
  * Date: 8/5/13
  * Time: 4:40 PM
  */
-console.log('hi');
-
-var Medium = function () {};
-
-var GL = require('./../../scripts/modules/app');
 
 describe('Test for app.js module', function() {
 
@@ -21,11 +16,6 @@ describe('Test for app.js module', function() {
         it('Should have GL with object emitter', function(){
             expect(GL.emitter).to.be.ok();
             expect(GL.emitter).to.be.an('object');
-        });
-
-        it('Should have GL with function init', function(){
-            expect(GL.init).to.be.ok();
-            expect(GL.init).to.be.a('function');
         });
 
     });
