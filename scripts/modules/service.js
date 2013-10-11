@@ -27,7 +27,7 @@
 
         data = JSON.parse(gl.storage.get('gl.' + key));
         if (data && data.length > 0) {
-            deferred.resolve(data)
+            deferred.resolve(data);
             return deferred.promise();
         }
 

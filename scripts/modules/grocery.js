@@ -29,7 +29,7 @@
             $('#body').removeClass('h');
 
             gl.common.showLoading();
-            var isLoaded = groceryVm.groceryArray().length > 0
+            var isLoaded = groceryVm.groceryArray().length > 0;
             gl.service.get('groceries', isLoaded).done(function (data) {
 
                 if (data && data.length > 0) {

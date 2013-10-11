@@ -11,9 +11,4 @@
 
     GL.emitter = new Medium();
 
-    GL.init = function () {
-        GL.groceries.init();
-        GL.products.init();
-    };
-
 })(window);
