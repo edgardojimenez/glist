@@ -66,6 +66,7 @@
 
         gl.cache.addProduct.on('pageinit', function () {
             $('#body').removeClass('h');
+
             ko.bindingHandlers.jqmChecked = {
                 init: function (element, valueAccessor) {
 

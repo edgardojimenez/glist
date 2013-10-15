@@ -8,12 +8,12 @@
     'use strict';
 
     var productFactory = (function () {
-        function ProductFactory (id, name) {
+        function Product (id, name) {
             this.id = ko.observable(id);
             this.name = ko.observable(name);
         }
 
-        ProductFactory.prototype = {
+        Product.prototype = {
             removeGrocery: function () {
                 gl.emitter.publish('deletegrocery', this.id())
             },
@@ -33,7 +33,7 @@
         };
 
         return function (id, name) {
-            return new ProductFactory(id, name);
+            return new Product(id, name);
         };
     })();
     
