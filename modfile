@@ -105,7 +105,7 @@ module.exports = {
             },
             "js": {
                 "source": "./build/js/all.js",
-                "dest": "./build/js/all.min.js"
+                "dest": "./build/js/all.js"
             },
             "html": {
                 "source": "./build/index-temp.html",
@@ -139,7 +139,8 @@ module.exports = {
             },
             "js": {
                 "source": "./build/js/all.min.js",
-                "dest": "./scripts/all.min.js"
+                "dest": "./scripts/all.min.js",
+                "backup": false
             }
         },
 
